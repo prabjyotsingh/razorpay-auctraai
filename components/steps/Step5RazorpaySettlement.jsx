@@ -76,7 +76,21 @@ export default function Step5RazorpaySettlement() {
   };
 
   const currentStageIndex = ESCROW_STAGES.findIndex(s => s.key === escrowState.status);
-  const isSettled = escrowState.status === "SETTLED" || escrowState.status === "COMPLETED";
+  const isSettled = escrowState.status === "SETTLEMENT_COMPLETE" || escrowState.status === "SETTLED" || escrowState.status === "COMPLETED";
+
+  const handleAdvanceStep = () => {
+    if (escrowState.status === "ESCROW_CREATED" || escrowState.status === "PO_SIGNED") {
+      handleRealRazorpayCheckout();
+    } else if (escrowState.status === "FUNDS_LOCKED") {
+      progressEscrow("SUPPLIER_ACCEPTED");
+    } else if (escrowState.status === "SUPPLIER_ACCEPTED") {
+      progressEscrow("DISPATCH_AND_INSPECTED");
+    } else if (escrowState.status === "DISPATCH_AND_INSPECTED") {
+      progressEscrow("SETTLEMENT_COMPLETE");
+    } else {
+      progressEscrow("SETTLEMENT_COMPLETE");
+    }
+  };
 
   return (
     <div className="w-full space-y-6">
@@ -109,36 +123,26 @@ export default function Step5RazorpaySettlement() {
           </button>
         ) : (
           <button
-            onClick={() => {
-              if (escrowState.status === "PO_SIGNED") {
-                handleRealRazorpayCheckout();
-              } else if (escrowState.status === "FUNDS_LOCKED") {
-                progressEscrow("GOODS_IN_TRANSIT");
-              } else if (escrowState.status === "GOODS_IN_TRANSIT") {
-                progressEscrow("INSPECTION_PASSED");
-              } else if (escrowState.status === "INSPECTION_PASSED") {
-                progressEscrow("SETTLED");
-              }
-            }}
+            onClick={handleAdvanceStep}
             disabled={isOpeningRazorpay}
             className="primary-gradient-btn h-10 px-4 text-[13px] flex items-center gap-2 cursor-pointer shrink-0"
           >
             {isOpeningRazorpay ? (
               <>
                 <RefreshCw size={14} className="animate-spin" />
-                <span>Opening Payment Gateway...</span>
+                <span>Opening Razorpay Gateway...</span>
               </>
-            ) : escrowState.status === "PO_SIGNED" ? (
+            ) : escrowState.status === "ESCROW_CREATED" || escrowState.status === "PO_SIGNED" ? (
               <>
                 <Lock size={14} />
                 <span>Lock Funds in Escrow</span>
               </>
             ) : escrowState.status === "FUNDS_LOCKED" ? (
-              <span>Simulate Goods Dispatch</span>
-            ) : escrowState.status === "GOODS_IN_TRANSIT" ? (
-              <span>Confirm Delivery Inspection</span>
+              <span>Simulate Supplier Dispatch</span>
+            ) : escrowState.status === "SUPPLIER_ACCEPTED" ? (
+              <span>Confirm Delivery &amp; Inspection</span>
             ) : (
-              <span>Release Payment to Vendor</span>
+              <span>Release Settlement to Vendor</span>
             )}
             <ArrowRight size={14} />
           </button>
@@ -200,7 +204,8 @@ export default function Step5RazorpaySettlement() {
                     <span className="text-[11px] font-mono text-[#64748B]">0{idx + 1}</span>
                     {isPast && <Check size={14} className="text-[#10B981]" />}
                   </div>
-                  <div className="font-semibold text-[12.5px] leading-snug">{stage.title}</div>
+                  <div className="font-semibold text-[13px] leading-snug text-[#0F172A]">{stage.label || stage.title}</div>
+                  <div className="text-[11px] text-[#64748B] mt-1 leading-snug line-clamp-2">{stage.description}</div>
                 </div>
               );
             })}
