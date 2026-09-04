@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auctra Procurement Copilot</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="popup-wrapper" role="main" aria-label="Auctra Procurement Copilot">
+    <!-- Header -->
+    <header class="header-strip">
+      <div class="brand-cluster">
+        <div class="brand-mark" aria-hidden="true">
+          <img src="icons/brand-mark.png" alt="Auctra AI" style="width: 22px; height: 22px; object-fit: contain;" />
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-name">Auctra AI</h1>
+          <span class="brand-sub">Enterprise Procurement Copilot</span>
+        </div>
+      </div>
+      <div class="status-indicator">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="sourceBadge" class="status-label">IndiaMART</span>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <main class="main-content">
+      <!-- Loading Skeleton / Spinner (< 200ms) -->
+      <div id="loadingView" class="loading-container" aria-live="polite">
+        <div class="micro-spinner" aria-hidden="true"></div>
+        <span class="loading-caption">Scanning marketplace specifications...</span>
+      </div>
+
+      <!-- Main Workspace View -->
+      <div id="workspaceView" class="workspace-layout" style="display: none;">
+        
+        <!-- SECTION 1: Captured Quote -->
+        <section class="section-block" aria-labelledby="sec1-title">
+          <div class="section-head">
+            <h2 id="sec1-title" class="section-title">Captured Quote</h2>
+            <span class="trust-badge" aria-label="Supplier verified">✓ Verified Listing</span>
+          </div>
+
+          <div class="quote-card">
+            <div class="product-row">
+              <span id="productTitle" class="product-title-text" title="Product Title">Ergonomic Memory Foam Wrist Rest</span>
+            </div>
+
+            <div class="quote-grid">
+              <div class="quote-spec">
+                <span class="spec-label">Supplier</span>
+                <span id="supplierName" class="spec-value">TechHub Direct</span>
+              </div>
+              <div class="quote-spec">
+                <span class="spec-label">Source</span>
+                <span id="sourceName" class="spec-value">IndiaMART</span>
+              </div>
+              <div class="quote-spec">
+                <span class="spec-label">Price</span>
+                <span id="unitPriceText" class="spec-value highlight">₹850 <span class="unit-sub">/ unit</span></span>
+              </div>
+              <div class="quote-spec">
+                <span class="spec-label">MOQ</span>
+                <span id="moqText" class="spec-value">50 units</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 2: Market Opportunity -->
+        <section class="section-block" aria-labelledby="sec2-title">
+          <div class="section-head">
+            <h2 id="sec2-title" class="section-title">Market Opportunity</h2>
+            <span class="saving-badge" aria-label="Deflation percentage">18.9% Deflation</span>
+          </div>
+
+          <div class="opportunity-card">
+            <div class="metric-row">
+              <div class="metric-cell">
+                <span class="metric-label">Current Quote</span>
+                <span id="currentQuoteMetric" class="metric-val">₹850</span>
+              </div>
+              <div class="metric-cell">
+                <span class="metric-label">Best Market Bid</span>
+                <span id="bestBidMetric" class="metric-val best">₹689</span>
+              </div>
+              <div class="metric-cell">
+                <span class="metric-label">Potential Savings</span>
+                <span id="savingsMetric" class="metric-val savings">₹8,050</span>
+              </div>
+              <div class="metric-cell">
+                <span class="metric-label">Suppliers</span>
+                <span id="suppliersCountMetric" class="metric-val">18 verified</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Collapsible Supplier Risk Audit Drawer -->
+        <div id="supplierRiskDrawer" class="risk-drawer" style="display: none;" role="region" aria-label="Supplier Risk Analysis">
+          <div class="drawer-header">
+            <span class="drawer-title">Supplier Risk & Compliance</span>
+            <span id="riskPill" class="pill-low">Low Risk</span>
+          </div>
+          <div class="drawer-grid">
+            <div class="drawer-cell">
+              <span class="drawer-label">Trust Score</span>
+              <span id="drawerTrustScore" class="drawer-val">94/100</span>
+            </div>
+            <div class="drawer-cell">
+              <span class="drawer-label">GSTIN Check</span>
+              <span id="drawerGstin" class="drawer-val text-success">Verified ✓</span>
+            </div>
+            <div class="drawer-cell">
+              <span class="drawer-label">MSME Status</span>
+              <span id="drawerMsme" class="drawer-val text-success">UDYAM Active</span>
+            </div>
+            <div class="drawer-cell">
+              <span class="drawer-label">Delivery SLA</span>
+              <span id="drawerSla" class="drawer-val">36 Hours</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION 3: Actions (Max 2 Actions) -->
+        <section class="action-block" aria-label="Procurement Actions">
+          <button id="launchAuctionBtn" class="btn-primary" type="button" aria-label="Create RFQ">
+            Create RFQ
+          </button>
+          <button id="analyzeSupplierBtn" class="btn-secondary" type="button" aria-label="Analyze Supplier Compliance">
+            Analyze Supplier
+          </button>
+        </section>
+
+        <!-- User-friendly Error or Alert Banner -->
+        <div id="errorBanner" class="alert-banner" style="display: none;" role="alert">
+          <span id="errorMessage">We couldn't identify a supplier on this page.</span>
+        </div>
+
+        <!-- Recent RFQs History Toggle / Section -->
+        <section class="history-section" aria-labelledby="history-title">
+          <div class="history-toggle" id="historyToggleBtn" role="button" tabindex="0" aria-expanded="false">
+            <span id="history-title" class="history-title-text">Recent Sourcing Events</span>
+            <span id="historyCount" class="history-count-badge">0</span>
+          </div>
+          <div id="historyList" class="history-list-box" style="display: none;">
+            <!-- Populated via popup.js -->
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Success State -->
+      <div id="successView" class="success-screen" style="display: none;" aria-live="polite">
+        <div class="success-check-circle" aria-hidden="true">✓</div>
+        <h2 class="success-headline">RFQ Created Successfully</h2>
+        <div id="createdRfqId" class="success-rfq-pill">RFQ-2848</div>
+        <p class="success-subtext">
+          Supplier requirement captured. Opening reverse auction workspace...
+        </p>
+        <button id="openWorkspaceDirectBtn" class="btn-primary" type="button">
+          Open RFQ Workspace →
+        </button>
+      </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-strip">
+      <span class="footer-note">Escrow Protected</span>
+      <a href="#" id="openDashboardLink" class="footer-link" aria-label="Open Auctra Web Dashboard">Open Dashboard</a>
+    </footer>
+  </div>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+// Auctra AI - Enterprise Autonomous Procurement Database Schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ProcurementRequest {
+  id                   String        @id @default(cuid())
+  product              String
+  quantity             Int
+  budget               Float         // Budget per unit (INR)
+  maxBudget            Float         // Total budget ceiling (INR)
+  sla                  String        // e.g. "48 hours"
+  slaHours             Int           @default(48)
+  strategy             String        @default("Reverse Auction")
+  status               String        @default("intent_captured") // intent_captured, auction_active, completed, settled
+  rawPrompt            String?
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  auction              Auction?
+  contract             Contract?
+}
+
+model Vendor {
+  id                   String        @id @default(cuid())
+  name                 String
+  trustScore           Int           // 0-100
+  slaHours             Int           // Guaranteed delivery turnaround in hours
+  currentBid           Float         // Current active bid amount per unit
+  rating               Float         @default(4.8)
+  city                 String        @default("Bengaluru")
+  isVerified           Boolean       @default(true)
+  gstin                String?
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  bids                 Bid[]
+  contractsWon         Contract[]
+}
+
+model Auction {
+  id                   String             @id @default(cuid())
+  procurementId        String             @unique
+  procurement          ProcurementRequest @relation(fields: [procurementId], references: [id])
+  startPrice           Float              // Budget ceiling start price
+  currentLowestBid     Float
+  status               String             @default("scheduled") // scheduled, running, completed
+  winningVendorId      String?
+  savingsGenerated     Float              @default(0)
+  savingsPercent       Float              @default(0)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  bids                 Bid[]
+  contract             Contract?
+}
+
+model Bid {
+  id                   String        @id @default(cuid())
+  auctionId            String
+  auction              Auction       @relation(fields: [auctionId], references: [id])
+  vendorId             String
+  vendor               Vendor        @relation(fields: [vendorId], references: [id])
+  amount               Float         // Bid amount per unit
+  totalAmount          Float         // Total amount for batch
+  deliverySLA          String        // e.g. "24h Express"
+  timestamp            DateTime      @default(now())
+  isWinningBid         Boolean       @default(false)
+}
+
+model Contract {
+  id                   String             @id @default(cuid())
+  poNumber             String             @unique // e.g. PO-2026-98421
+  procurementId        String             @unique
+  procurement          ProcurementRequest @relation(fields: [procurementId], references: [id])
+  auctionId            String             @unique
+  auction              Auction            @relation(fields: [auctionId], references: [id])
+  vendorId             String
+  vendor               Vendor             @relation(fields: [vendorId], references: [id])
+  quantity             Int
+  unitPrice            Float
+  totalAmount          Float
+  savings              Float
+  deliverySLA          String
+  contractHash         String             // SHA-256 integrity hash
+  buyerApproved        Boolean            @default(true)
+  treasuryApproved     Boolean            @default(false)
+  timestamp            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  settlement           Settlement?
+}
+
+model Settlement {
+  id                   String        @id @default(cuid())
+  contractId           String        @unique
+  contract             Contract      @relation(fields: [contractId], references: [id])
+  razorpayOrderId      String        @unique
+  razorpayPaymentId    String?
+  escrowStatus         String        @default("ESCROW_CREATED") // ESCROW_CREATED, FUNDS_LOCKED, SUPPLIER_ACCEPTED, DISPATCH_AND_INSPECTED, SETTLEMENT_COMPLETE
+  grossAmount          Float
+  platformFee          Float
+  netSupplierAmount    Float
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+}
