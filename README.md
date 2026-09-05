@@ -30,7 +30,7 @@ Auctra AI evolved from an initial procurement dashboard into a full end-to-end p
 
 ---
 
-## 🧭 Chrome Extension Demo Flow (Judge Key Differentiator)
+## 🧭 Chrome Extension Extraction Flow (Key Sourcing Differentiator)
 
 Follow this seamless end-to-end workflow to experience the core differentiator:
 
@@ -127,7 +127,7 @@ Auctra implements the **Reserve Bank of India (RBI) Nodal Escrow Directive**:
 
 ---
 
-## 🚀 Quick Start for Judges & Developers
+## 🚀 Quick Start for Developers & Evaluators
 
 ### Prerequisites
 - Node.js 18+ or 20+
@@ -149,10 +149,10 @@ Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 4. Open any product page (or `http://localhost:3000`) and click the Auctra extension icon.
 *(A pre-packaged extension ZIP is also provided in `public/auctra-procurement-copilot-v1.0.0.zip`)*
 
-### 3. One-Click Reset for Judges
-Judges can reset the entire platform state at any time:
+### 3. One-Click Environment Reset
+Evaluators can reset the entire platform state to a clean initial baseline at any time:
 - Click the **Reset Demo** button in the top navigation bar.
-- Or click **Reset Demo State** inside the **Judge Pitch & Evaluation** modal (`Resources → Judge Pitch & Evaluation`).
+- Or click **Reset Environment** inside the **Evaluation & Methodology** view (`Resources → Evaluation & Methodology`).
 - Or run the automated AutoPilot sequence from the top banner.
 
 ---
@@ -161,17 +161,23 @@ Judges can reset the entire platform state at any time:
 
 ```
 auctra/
-├── app/                        # Next.js 16 App Router (16 routes)
+├── app/                        # Next.js 16 App Router
 │   ├── api/                    # Route handlers (Razorpay, RFQ, Intent, Vendors)
 │   ├── rfq/[id]/               # Dedicated RFQ Workspace opened from Extension
+│   ├── documentation/          # Developer & REST API Documentation
+│   ├── resources/              # Enterprise Knowledge Hub
+│   ├── architecture/           # Interactive Technical Blueprint
+│   ├── evaluation/             # Evaluation & Verification Playbook
 │   ├── globals.css             # Tailwind & Enterprise CSS tokens
 │   ├── layout.js               # Root layout & Google Fonts (Inter)
 │   └── page.js                 # Single-page reactive application shell
 ├── components/
 │   ├── dashboard/              # Executive KPI cards & active RFQ data grids
+│   ├── documentation/          # Documentation view & API specifications
+│   ├── evaluation/             # EvaluationView & EvaluationModal
 │   ├── extension/              # In-app Chrome Extension simulation sandbox
-│   ├── layout/                 # EnterpriseNavbar, Footer, JudgePitchModal
-│   ├── resources/              # Technical Architecture & Pipeline Diagrams
+│   ├── layout/                 # EnterpriseNavbar, Footer, Topbar
+│   ├── resources/              # ArchitectureView & ResourcesView
 │   ├── steps/                  # 5-stage procurement workflow views
 │   └── suppliers/              # Slide-over Supplier Profile Drawers
 ├── extension/                  # Chrome Extension Manifest V3 source code
@@ -180,7 +186,7 @@ auctra/
 │   ├── content.js              # Marketplace scrapers (IndiaMART, Amazon, TradeIndia)
 │   └── background.js           # Service worker & tab coordination
 ├── lib/                        # Domain logic (Auctions, GSTIN check, Contracts, Razorpay)
-├── prisma/                     # Database seed data (Vendors, RFQs, Auctions)
+├── prisma/                     # Database schema & seed data
 ├── public/                     # Static assets, brand marks, and extension ZIP
 └── store/                      # Zustand store (useProcurementStore.js)
 ```

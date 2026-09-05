@@ -9,21 +9,23 @@ import {
   Search, 
   ChevronDown, 
   Layers, 
-  Trophy, 
+  BookOpen,
+  FileText,
+  Scale, 
   Plus,
   RotateCcw,
   Compass,
   ArrowRight,
   ExternalLink
 } from "lucide-react";
-import JudgePitchModal from "@/components/layout/JudgePitchModal";
+import EvaluationModal from "@/components/evaluation/EvaluationModal";
 
 export default function EnterpriseNavbar() {
   const router = useRouter();
   const pathname = usePathname() || "/";
   const { currentView, setCurrentView, resetToDemoState } = useProcurementStore();
   const [showResources, setShowResources] = useState(false);
-  const [showPitchModal, setShowPitchModal] = useState(false);
+  const [showEvaluationModal, setShowEvaluationModal] = useState(false);
   const [resetSuccess, setResetSuccess] = useState(false);
 
   const handleReset = () => {
@@ -114,23 +116,63 @@ export default function EnterpriseNavbar() {
             })}
           </nav>
 
-          {/* Right Action Group */}
+          {/* Right Action Utilities */}
           <div className="flex items-center gap-2.5">
-            {/* Resources Dropdown */}
+            {/* Global Search Bar (Trigger) */}
+            <div className="relative hidden xl:block w-48">
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
+              <input
+                type="text"
+                readOnly
+                placeholder="Search RFQ, Vendor..."
+                onClick={() => router.push("/rfqs")}
+                className="w-full h-9 pl-8 pr-3 text-xs bg-[#F8FAFC] border border-[#E2E8F0] rounded-[10px] text-[#0F172A] placeholder:text-[#94A3B8] focus:outline-none hover:border-[#CBD5E1] cursor-pointer transition-colors"
+              />
+            </div>
+
+            {/* Resources & Architecture Dropdown */}
             <div className="relative">
               <button
                 onClick={() => setShowResources(!showResources)}
-                className="h-9 px-3 text-[13px] font-medium text-[#64748B] hover:text-[#0F172A] hover:bg-[#F1F5F9] rounded-[12px] border border-transparent hover:border-[#E2E8F0] transition-colors flex items-center gap-1.5 cursor-pointer"
+                className={`h-9 px-3 text-[12.5px] font-medium rounded-[10px] border transition-all flex items-center gap-1.5 cursor-pointer ${
+                  showResources 
+                    ? "bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE]" 
+                    : "text-[#64748B] hover:text-[#0F172A] hover:bg-[#F8FAFC] border-[#E2E8F0]"
+                }`}
               >
                 <span>Resources</span>
-                <ChevronDown size={14} className={`transition-transform duration-200 ${showResources ? "rotate-180" : ""}`} />
+                <ChevronDown size={13} className={`transition-transform duration-200 ${showResources ? "rotate-180" : ""}`} />
               </button>
 
               {showResources && (
                 <div 
-                  className="absolute right-0 mt-2 w-56 bg-white border border-[#EEF2F7] rounded-[16px] shadow-[0_12px_32px_rgba(15,23,42,0.1)] p-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+                  className="absolute right-0 mt-2 w-60 bg-white border border-[#EEF2F7] rounded-[16px] shadow-[0_12px_32px_rgba(15,23,42,0.1)] p-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
                   onMouseLeave={() => setShowResources(false)}
                 >
+                  <Link
+                    href="/documentation"
+                    onClick={() => {
+                      setCurrentView("documentation");
+                      setShowResources(false);
+                    }}
+                    className="w-full text-left px-3 py-2 text-[12.5px] font-medium text-[#0F172A] hover:bg-[#F8FAFC] rounded-[10px] flex items-center gap-2 transition-colors cursor-pointer"
+                  >
+                    <BookOpen size={14} className="text-[#2563EB]" />
+                    <span>Documentation</span>
+                  </Link>
+
+                  <Link
+                    href="/resources"
+                    onClick={() => {
+                      setCurrentView("resources");
+                      setShowResources(false);
+                    }}
+                    className="w-full text-left px-3 py-2 text-[12.5px] font-medium text-[#0F172A] hover:bg-[#F8FAFC] rounded-[10px] flex items-center gap-2 transition-colors cursor-pointer"
+                  >
+                    <FileText size={14} className="text-[#059669]" />
+                    <span>Resources Hub</span>
+                  </Link>
+
                   <Link
                     href="/architecture"
                     onClick={() => {
@@ -139,20 +181,21 @@ export default function EnterpriseNavbar() {
                     }}
                     className="w-full text-left px-3 py-2 text-[12.5px] font-medium text-[#0F172A] hover:bg-[#F8FAFC] rounded-[10px] flex items-center gap-2 transition-colors cursor-pointer"
                   >
-                    <Layers size={14} className="text-[#2563EB]" />
-                    <span>Technical Architecture</span>
+                    <Layers size={14} className="text-[#7C3AED]" />
+                    <span>Architecture Blueprint</span>
                   </Link>
 
-                  <button
+                  <Link
+                    href="/evaluation"
                     onClick={() => {
-                      setShowPitchModal(true);
+                      setCurrentView("evaluation");
                       setShowResources(false);
                     }}
                     className="w-full text-left px-3 py-2 text-[12.5px] font-medium text-[#0F172A] hover:bg-[#F8FAFC] rounded-[10px] flex items-center gap-2 transition-colors cursor-pointer"
                   >
-                    <Trophy size={14} className="text-[#F59E0B]" />
-                    <span>Judge Pitch &amp; Evaluation</span>
-                  </button>
+                    <Scale size={14} className="text-[#D97706]" />
+                    <span>Evaluation &amp; Methodology</span>
+                  </Link>
 
                   <div className="h-[1px] bg-[#EEF2F7] my-1" />
 
@@ -164,16 +207,16 @@ export default function EnterpriseNavbar() {
                     className="w-full text-left px-3 py-2 text-[12.5px] font-medium text-[#DC2626] hover:bg-[#FEF2F2] rounded-[10px] flex items-center gap-2 transition-colors cursor-pointer"
                   >
                     <RotateCcw size={14} className="text-[#DC2626]" />
-                    <span>Reset Demo Environment</span>
+                    <span>Reset Environment</span>
                   </button>
                 </div>
               )}
             </div>
 
-            {/* One-Click Reset Demo Button for Judges */}
+            {/* One-Click Reset Demo Button */}
             <button
               onClick={handleReset}
-              title="One-click reset to clean demo environment"
+              title="Reset to clean demo environment"
               className={`h-9 px-3 text-[12.5px] font-medium rounded-[12px] border transition-all flex items-center gap-1.5 cursor-pointer ${
                 resetSuccess 
                   ? "bg-[#F0FDF4] text-[#16A34A] border-[#BBF7D0]" 
@@ -188,7 +231,7 @@ export default function EnterpriseNavbar() {
             <Link
               href="/rfqs"
               onClick={() => setCurrentView("step1")}
-              className="primary-gradient-btn h-10 px-4 flex items-center gap-1.5 text-[13px] cursor-pointer shrink-0"
+              className="h-9 px-4 bg-[#0F172A] hover:bg-[#1E293B] text-white text-[13px] font-semibold rounded-[10px] flex items-center gap-2 transition-all shadow-[0_4px_12px_rgba(15,23,42,0.15)] hover:shadow-[0_4px_16px_rgba(15,23,42,0.25)] cursor-pointer"
             >
               <Plus size={15} strokeWidth={2.5} />
               <span>Create RFQ</span>
@@ -197,8 +240,8 @@ export default function EnterpriseNavbar() {
         </header>
       </div>
 
-      {/* Pitch / Judge Modal */}
-      <JudgePitchModal isOpen={showPitchModal} onClose={() => setShowPitchModal(false)} />
+      {/* Evaluation Modal */}
+      <EvaluationModal isOpen={showEvaluationModal} onClose={() => setShowEvaluationModal(false)} />
     </>
   );
 }

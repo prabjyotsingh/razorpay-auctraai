@@ -508,7 +508,7 @@ export const useProcurementStore = create((set, get) => {
       });
     },
 
-    // One-Click Reset for Judges & Evaluators
+    // One-Click Reset for Enterprise Evaluation & Clean Demo Environment
     resetToDemoState: () => {
       const currentTimer = get().auctionTimerId;
       if (currentTimer) {

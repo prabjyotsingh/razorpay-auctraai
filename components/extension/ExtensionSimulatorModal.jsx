@@ -318,7 +318,7 @@ export default function ExtensionSimulatorModal({ isOpen, onClose }) {
             </div>
           </div>
         ) : (
-          /* Chrome Extension Loading Instructions for Judges */
+          /* Chrome Extension Loading Instructions for Evaluation & Deployment */
           <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-white text-slate-800">
             <h3 className="text-base font-bold text-slate-900">
               How to Test the Physical Chrome Extension

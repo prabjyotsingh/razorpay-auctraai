@@ -2,23 +2,26 @@
 
 import React, { useState } from "react";
 import { useProcurementStore } from "@/store/useProcurementStore";
-import JudgePitchModal from "@/components/layout/JudgePitchModal";
+import EvaluationModal from "@/components/evaluation/EvaluationModal";
 import { 
   Search, 
   BookOpen, 
-  ChevronDown,
-  Plus
+  ChevronDown, 
+  Plus,
+  Layers,
+  FileText,
+  Scale
 } from "lucide-react";
 
 export default function Topbar() {
   const { 
     setActiveStep, 
-    setCurrentView,
-    currentView
+    setCurrentView, 
+    currentView 
   } = useProcurementStore();
 
   const [isResourcesMenuOpen, setIsResourcesMenuOpen] = useState(false);
-  const [isJudgeModalOpen, setIsJudgeModalOpen] = useState(false);
+  const [isEvaluationModalOpen, setIsEvaluationModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const getViewTitle = () => {
@@ -33,6 +36,9 @@ export default function Topbar() {
       case "risk": return "Risk";
       case "extension": return "Chrome Copilot";
       case "architecture": return "Architecture";
+      case "documentation": return "Documentation";
+      case "resources": return "Resources";
+      case "evaluation": return "Evaluation";
       default: return "Dashboard";
     }
   };
@@ -83,25 +89,47 @@ export default function Topbar() {
             </button>
 
             {isResourcesMenuOpen && (
-              <div className="absolute right-0 mt-1 w-48 bg-white rounded-md shadow-md border border-slate-200 py-1 text-xs text-slate-700 z-50">
+              <div className="absolute right-0 mt-1 w-52 bg-white rounded-md shadow-md border border-slate-200 py-1 text-xs text-slate-700 z-50">
+                <button
+                  onClick={() => {
+                    setIsResourcesMenuOpen(false);
+                    setCurrentView("documentation");
+                  }}
+                  className="w-full text-left px-3 py-1.5 hover:bg-slate-50 text-slate-800 font-normal cursor-pointer flex items-center gap-2"
+                >
+                  <BookOpen size={13} className="text-blue-600" />
+                  <span>Documentation</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setIsResourcesMenuOpen(false);
+                    setCurrentView("resources");
+                  }}
+                  className="w-full text-left px-3 py-1.5 hover:bg-slate-50 text-slate-800 font-normal cursor-pointer flex items-center gap-2"
+                >
+                  <FileText size={13} className="text-emerald-600" />
+                  <span>Resources Hub</span>
+                </button>
                 <button
                   onClick={() => {
                     setIsResourcesMenuOpen(false);
                     setCurrentView("architecture");
                   }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-slate-50 text-slate-800 font-normal cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-slate-50 text-slate-800 font-normal cursor-pointer flex items-center gap-2"
                 >
-                  Architecture &amp; Validation
+                  <Layers size={13} className="text-purple-600" />
+                  <span>Architecture</span>
                 </button>
                 <div className="h-px bg-slate-100 my-1" />
                 <button
                   onClick={() => {
                     setIsResourcesMenuOpen(false);
-                    setIsJudgeModalOpen(true);
+                    setIsEvaluationModalOpen(true);
                   }}
-                  className="w-full text-left px-3 py-1.5 hover:bg-slate-50 text-slate-800 font-normal cursor-pointer"
+                  className="w-full text-left px-3 py-1.5 hover:bg-slate-50 text-slate-800 font-normal cursor-pointer flex items-center gap-2"
                 >
-                  Judge Guide
+                  <Scale size={13} className="text-amber-600" />
+                  <span>Evaluation &amp; Methodology</span>
                 </button>
               </div>
             )}
@@ -118,10 +146,10 @@ export default function Topbar() {
         </div>
       </header>
 
-      {/* Judge Guide Modal */}
-      <JudgePitchModal
-        isOpen={isJudgeModalOpen}
-        onClose={() => setIsJudgeModalOpen(false)}
+      {/* Evaluation Modal */}
+      <EvaluationModal
+        isOpen={isEvaluationModalOpen}
+        onClose={() => setIsEvaluationModalOpen(false)}
       />
     </>
   );

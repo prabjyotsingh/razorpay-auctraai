@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { 
-  Trophy, 
   HelpCircle, 
   ShieldCheck, 
   Bot, 
@@ -10,14 +9,14 @@ import {
   Building2, 
   CheckCircle2, 
   ExternalLink, 
-  Copy, 
-  Check,
   RotateCcw,
-  Code2
+  Code2,
+  FileCheck,
+  Scale
 } from "lucide-react";
 import { useProcurementStore } from "@/store/useProcurementStore";
 
-export default function JudgePitchModal({ isOpen, onClose }) {
+export default function EvaluationModal({ isOpen, onClose }) {
   const [activeTab, setActiveTab] = useState("suppliers");
   const [resetDone, setResetDone] = useState(false);
   const { resetToDemoState } = useProcurementStore();
@@ -43,10 +42,10 @@ export default function JudgePitchModal({ isOpen, onClose }) {
         <div className="p-6 bg-[#F8FAFC] border-b border-[#EEF2F7] flex items-center justify-between">
           <div>
             <div className="text-[11.5px] font-semibold text-[#2563EB] uppercase tracking-wider mb-0.5">
-              Technical Architecture &amp; Evaluation Guide
+              Technical Architecture &amp; System Evaluation
             </div>
             <h2 className="text-xl font-bold text-[#0F172A] tracking-tight">
-              Auctra AI Evaluation Playbook
+              Auctra AI Enterprise Evaluation Playbook
             </h2>
           </div>
 
@@ -258,7 +257,7 @@ export default function JudgePitchModal({ isOpen, onClose }) {
         <div className="p-5 bg-[#F8FAFC] border-t border-[#EEF2F7] flex items-center justify-between">
           <div className="text-[12px] text-[#64748B] flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#2563EB]" />
-            <span>Demo Environment • Based on sample procurement dataset</span>
+            <span>Evaluation Environment • Connected to simulated enterprise catalog</span>
           </div>
 
           <div className="flex items-center gap-2.5">
@@ -271,7 +270,7 @@ export default function JudgePitchModal({ isOpen, onClose }) {
               }`}
             >
               <RotateCcw size={13} className={resetDone ? "animate-spin" : ""} />
-              <span>{resetDone ? "Reset Complete!" : "Reset Demo State"}</span>
+              <span>{resetDone ? "Reset Complete!" : "Reset Environment"}</span>
             </button>
 
             <button
