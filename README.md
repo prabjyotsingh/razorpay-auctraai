@@ -1,238 +1,326 @@
 # Auctra AI
 
-### AI-Powered Procurement & Supplier Management Platform
+<div align="center">
 
-Auctra AI transforms how organizations discover suppliers, run sourcing events, negotiate pricing, and manage procurement operations. By combining supplier intelligence, competitive bidding, contract management, and payment workflows into a unified platform, Auctra helps businesses reduce procurement costs and accelerate purchasing decisions.
+# AI-Powered Procurement & Supplier Management Platform
 
----
+Transform supplier discovery into competitive sourcing, automate procurement workflows, and streamline purchasing decisions through a unified procurement platform.
 
-## Overview
+![Next.js](https://img.shields.io/badge/Next.js-15-black)
+![React](https://img.shields.io/badge/React-19-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.0-38BDF8)
+![Razorpay](https://img.shields.io/badge/Razorpay-Integrated-02042B)
 
-Procurement teams often spend significant time searching supplier directories, collecting quotations, comparing vendors, negotiating prices, generating purchase orders, and managing payment processes.
-
-Auctra AI streamlines this workflow by providing a centralized procurement workspace where buyers can:
-
-* Create procurement requests (RFQs)
-* Discover and evaluate suppliers
-* Launch competitive reverse auctions
-* Generate purchase orders and contracts
-* Manage payment and settlement workflows
-* Monitor procurement performance through analytics
+</div>
 
 ---
 
-## Core Features
+# Overview
 
-### Procurement Management
+Procurement teams often spend days collecting quotations, evaluating suppliers, negotiating prices, generating purchase orders, and coordinating payments across multiple systems.
+
+**Auctra AI** centralizes this workflow into a single platform that enables organizations to:
+
+- Create procurement requests (RFQs)
+- Discover and evaluate suppliers
+- Run competitive reverse auctions
+- Generate purchase orders and contracts
+- Manage payment workflows
+- Track procurement performance through analytics
+
+The result is a faster, more transparent, and more efficient procurement process.
+
+---
+
+# Key Features
+
+## Procurement Management
 
 Create and manage sourcing requests through a structured procurement workflow.
 
-**Capabilities**
+### Capabilities
 
-* RFQ creation
-* Budget management
-* Quantity management
-* Category-based sourcing
-* Procurement lifecycle tracking
-
----
-
-### Supplier Discovery
-
-Identify and evaluate suppliers from multiple sourcing channels.
-
-**Capabilities**
-
-* Supplier database
-* Vendor qualification
-* Supplier comparison
-* Trust and performance scoring
-* Supplier profiles
+- RFQ Creation
+- Budget Management
+- Quantity Management
+- Category-Based Procurement
+- Procurement Lifecycle Tracking
 
 ---
 
-### Reverse Auctions
+## Supplier Discovery
+
+Discover and evaluate suppliers from multiple sourcing channels.
+
+### Capabilities
+
+- Supplier Database
+- Vendor Qualification
+- Supplier Comparison
+- Supplier Profiles
+- Supplier Performance Insights
+
+---
+
+## Reverse Auctions
 
 Drive supplier competition and improve procurement outcomes.
 
-**Capabilities**
+### Capabilities
 
-* Live bidding environment
-* Bid comparison
-* Dynamic ranking
-* Savings calculation
-* Supplier competition analysis
+- Live Bidding Environment
+- Bid Comparison
+- Supplier Ranking
+- Savings Tracking
+- Supplier Competition Analysis
 
 ---
 
-### Contract & Purchase Order Management
+## Contract Management
 
 Generate procurement documentation and maintain audit-ready records.
 
-**Capabilities**
+### Capabilities
 
-* Purchase order generation
-* Contract management
-* Approval workflows
-* Procurement audit trails
+- Purchase Order Generation
+- Contract Creation
+- Approval Workflows
+- Procurement Audit Trails
+- PDF Export
 
 ---
 
-### Payment & Settlement
+## Payment & Settlement
 
 Manage procurement transactions and payment workflows.
 
-**Capabilities**
+### Capabilities
 
-* Payment tracking
-* Settlement monitoring
-* Purchase reconciliation
-* Transaction history
+- Payment Tracking
+- Settlement Monitoring
+- Purchase Reconciliation
+- Transaction History
 
 ---
 
-### Spend Analytics
+## Spend Analytics
 
-Gain visibility into procurement performance and cost optimization opportunities.
+Gain visibility into procurement performance.
 
-**Capabilities**
+### Capabilities
 
-* Spend analysis
-* Savings tracking
-* Supplier performance reporting
-* Procurement activity dashboards
-* Contract analytics
+- Spend Analysis
+- Savings Tracking
+- Procurement Reporting
+- Supplier Performance Metrics
+- Procurement Activity Monitoring
 
 ---
 
 ## Browser Extension
 
-The Auctra AI Browser Extension allows buyers to capture supplier and product information directly from supplier marketplaces and instantly convert them into procurement requests.
+Capture supplier information directly from supplier marketplaces and instantly create procurement requests.
 
 ### Supported Platforms
 
-* IndiaMART
-* Amazon Business
-* Alibaba
-* TradeIndia
+- IndiaMART
+- Amazon Business
+- Alibaba
+- TradeIndia
 
-### Extension Features
+### Features
 
-* One-click supplier capture
-* Product information extraction
-* RFQ creation
-* Marketplace integration
-* Procurement workflow synchronization
+- One-Click RFQ Creation
+- Product Information Extraction
+- Supplier Information Capture
+- Marketplace Integration
+- Procurement Workflow Synchronization
 
 ---
 
-## Procurement Workflow
+# System Architecture
+
+Auctra AI is designed as a modular procurement platform that orchestrates supplier discovery, competitive bidding, contract management, and payment settlement through a unified workflow.
+
+```mermaid
+graph TD
+
+    subgraph S1["Requisition Ingestion"]
+        EXT["Chrome Extension (Manifest V3)"]
+        WEB["AI RFQ Creator"]
+        EXT --> API_INGEST["RFQ Creation API"]
+        WEB --> API_INTENT["Intent Processing Engine"]
+    end
+
+    subgraph S2["Supplier Discovery"]
+        API_INGEST --> SUP_DB[("Supplier Repository")]
+        API_INTENT --> SUP_DB
+        SUP_DB --> VERIFY["Supplier Verification"]
+        VERIFY --> PROFILE["Supplier Intelligence"]
+    end
+
+    subgraph S3["Competitive Sourcing"]
+        PROFILE --> AUCTION["Reverse Auction Engine"]
+        AUCTION --> RANKING["Bid Evaluation"]
+        RANKING --> SLA["Delivery & Risk Scoring"]
+        SLA --> WINNER["Winning Supplier Selection"]
+    end
+
+    subgraph S4["Contract Management"]
+        WINNER --> PO["Purchase Order Generation"]
+        PO --> APPROVAL["Approval Workflow"]
+        APPROVAL --> CONTRACT["Contract Creation"]
+        CONTRACT --> EXPORT["PDF Export"]
+    end
+
+    subgraph S5["Payment & Settlement"]
+        CONTRACT --> PAYMENT["Payment Processing"]
+        PAYMENT --> RECON["Purchase Reconciliation"]
+        RECON --> AUDIT["Audit & Settlement Records"]
+    end
+```
+
+---
+
+# Procurement Workflow
 
 ```text
 Supplier Marketplace
-        ↓
-Browser Extension
-        ↓
+        │
+        ▼
+Chrome Extension
+        │
+        ▼
 Create RFQ
-        ↓
+        │
+        ▼
 Supplier Discovery
-        ↓
+        │
+        ▼
 Reverse Auction
-        ↓
+        │
+        ▼
+Supplier Selection
+        │
+        ▼
 Purchase Order
-        ↓
+        │
+        ▼
+Contract Generation
+        │
+        ▼
 Payment & Settlement
 ```
 
 ---
 
-## Technology Stack
+# Technology Stack
 
-### Frontend
+## Frontend
 
-* Next.js
-* React
-* TypeScript
-* Tailwind CSS
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
 
-### Backend
+## Backend
 
-* Next.js API Routes
-* REST APIs
+- Next.js API Routes
+- REST APIs
 
-### Database
+## Database
 
-* PostgreSQL
-* Supabase
+- PostgreSQL
+- Supabase
 
-### Browser Extension
+## Browser Extension
 
-* Chrome Extension Manifest V3
-* Service Workers
-* Content Scripts
-* Chrome Storage API
+- Chrome Extension Manifest V3
+- Service Workers
+- Content Scripts
+- Chrome Storage API
 
-### Payments
+## Payments
 
-* Razorpay Integration
+- Razorpay Integration
 
-### State Management
+## State Management
 
-* Zustand
+- Zustand
 
 ---
 
-## Project Architecture
+# Project Structure
 
-```text
-┌──────────────────────┐
-│ Chrome Extension     │
-└──────────┬───────────┘
-           │
-           ▼
-┌──────────────────────┐
-│ RFQ Creation Engine  │
-└──────────┬───────────┘
-           │
-           ▼
-┌──────────────────────┐
-│ Supplier Discovery   │
-└──────────┬───────────┘
-           │
-           ▼
-┌──────────────────────┐
-│ Reverse Auctions     │
-└──────────┬───────────┘
-           │
-           ▼
-┌──────────────────────┐
-│ Contracts & POs      │
-└──────────┬───────────┘
-           │
-           ▼
-┌──────────────────────┐
-│ Razorpay Settlement  │
-└──────────────────────┘
+```bash
+auctra-ai/
+│
+├── app/
+│   ├── api/
+│   ├── dashboard/
+│   ├── rfq/
+│   └── layout/
+│
+├── components/
+│   ├── procurement/
+│   ├── suppliers/
+│   ├── auctions/
+│   ├── contracts/
+│   ├── analytics/
+│   └── ui/
+│
+├── extension/
+│   ├── manifest.json
+│   ├── background.js
+│   ├── content.js
+│   ├── popup.html
+│   ├── popup.js
+│   └── styles.css
+│
+├── lib/
+├── store/
+├── public/
+├── hooks/
+└── prisma/
 ```
 
 ---
 
-## Getting Started
+# Getting Started
 
-### Clone Repository
+## Clone Repository
 
 ```bash
 git clone https://github.com/prabjyotsingh/razorpay-auctraai.git
+
 cd razorpay-auctraai
 ```
 
-### Install Dependencies
+## Install Dependencies
 
 ```bash
 npm install
 ```
 
-### Run Development Server
+## Configure Environment Variables
+
+Create a `.env.local` file:
+
+```env
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+RAZORPAY_KEY_ID=your_key_id
+RAZORPAY_KEY_SECRET=your_key_secret
+
+GROQ_API_KEY=your_groq_api_key
+
+DATABASE_URL=your_database_url
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+## Run Development Server
 
 ```bash
 npm run dev
@@ -246,9 +334,9 @@ http://localhost:3000
 
 ---
 
-## Browser Extension Setup
+# Browser Extension Setup
 
-### Load Extension
+## Load Extension in Chrome
 
 1. Open Chrome
 2. Navigate to:
@@ -259,87 +347,111 @@ chrome://extensions
 
 3. Enable **Developer Mode**
 4. Click **Load Unpacked**
-5. Select the `extension` directory
+5. Select the `/extension` folder
 6. Pin the extension to the toolbar
 
-The extension is now ready to use on supported supplier marketplaces.
+The extension is now available on supported supplier marketplaces.
 
 ---
 
-## Use Cases
+# Example Use Case
+
+### Scenario
+
+A procurement manager discovers a supplier listing on IndiaMART.
+
+### Workflow
+
+1. Open supplier listing
+2. Launch Auctra AI Extension
+3. Capture supplier information
+4. Create RFQ
+5. Discover alternative suppliers
+6. Launch reverse auction
+7. Select supplier
+8. Generate purchase order
+9. Complete settlement workflow
+
+---
+
+# Analytics Dashboard
+
+Track procurement performance through:
+
+- Total Spend
+- Procurement Savings
+- Active RFQs
+- Supplier Performance
+- Contract Status
+- Procurement Activity
+- Procurement Cycle Time
+
+---
+
+# Security
+
+Auctra AI follows secure application practices:
+
+- Secure API Communication
+- Environment Variable Management
+- Authentication Controls
+- Audit Logging
+- Transaction Monitoring
+- Access Control Mechanisms
+
+---
+
+# Roadmap
+
+Future platform enhancements include:
+
+- Multi-User Collaboration
+- Advanced Approval Workflows
+- ERP Integrations
+- Supplier Scorecards
+- AI Procurement Recommendations
+- Predictive Spend Analytics
+- Mobile Applications
+- Advanced Reporting
+
+---
+
+# Use Cases
 
 ### Procurement Teams
 
-* Reduce sourcing cycle time
-* Improve supplier competition
-* Centralize procurement operations
+- Reduce sourcing cycle time
+- Improve supplier competition
+- Centralize procurement operations
 
 ### Operations Teams
 
-* Standardize purchasing workflows
-* Monitor procurement activity
-* Improve visibility across procurement processes
+- Standardize purchasing workflows
+- Improve procurement visibility
+- Monitor supplier activity
 
 ### Growing Businesses
 
-* Expand supplier networks
-* Optimize purchasing decisions
-* Improve spend control
+- Expand supplier networks
+- Optimize purchasing decisions
+- Improve spend control
 
 ---
 
-## Project Structure
+# License
 
-```text
-auctra-ai/
-│
-├── app/
-│   ├── api/
-│   ├── rfq/
-│   └── dashboard/
-│
-├── components/
-│   ├── procurement/
-│   ├── suppliers/
-│   ├── auctions/
-│   ├── contracts/
-│   └── analytics/
-│
-├── extension/
-│   ├── manifest.json
-│   ├── content.js
-│   ├── background.js
-│   ├── popup.html
-│   └── popup.js
-│
-├── lib/
-├── store/
-├── public/
-└── prisma/
-```
+This project is intended for educational, research, and demonstration purposes.
 
 ---
 
-## Future Roadmap
-
-* Multi-user collaboration
-* Approval workflows
-* ERP integrations
-* Supplier scorecards
-* Advanced spend analytics
-* Procurement recommendations
-* Mobile support
-
----
-
-## License
-
-This project is intended for educational, demonstration, and research purposes.
-
----
-
-## About Auctra AI
+# About Auctra AI
 
 **Auctra AI** is a modern procurement platform focused on supplier discovery, competitive sourcing, procurement automation, and payment orchestration.
 
-**Mission:** Simplify procurement workflows and help organizations make faster, more informed purchasing decisions.
+### Mission
+
+Enable organizations to make faster, more informed purchasing decisions through streamlined procurement workflows and supplier intelligence.
+
+---
+
+© 2026 Auctra AI. All rights reserved.
