@@ -15,7 +15,14 @@ export const metadata = {
   title: "Auctra AI — Autonomous Procurement. Intelligent Settlement.",
   description: "Autonomous Enterprise Procurement Platform. Natural language RFQs, verified supplier discovery, real-time auctions, enforceable digital contracts, and automated Razorpay escrow settlement.",
   keywords: ["autonomous procurement", "reverse auction", "enterprise SaaS", "Stripe for procurement", "Razorpay Route", "escrow", "Auctra AI"],
-  authors: [{ name: "Prabjyot Singh" }, { name: "Auctra AI Technologies" }]
+  authors: [{ name: "Prabjyot Singh" }, { name: "Auctra AI Technologies" }],
+  icons: {
+    icon: [
+      { url: "/brand-mark.png", type: "image/png" },
+    ],
+    shortcut: "/brand-mark.png",
+    apple: "/brand-mark.png",
+  },
 };
 
 export default function RootLayout({ children }) {
