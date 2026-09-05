@@ -31,44 +31,49 @@ export default function Step5RazorpaySettlement() {
 
       const data = await res.json();
       const order = data.order;
-      const keyId = data.keyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_SBAhrwOJWGds2W";
+      const keyId = data.keyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "";
 
-      if (!window.Razorpay) {
-        await new Promise((resolve) => {
-          const script = document.createElement("script");
-          script.src = "https://checkout.razorpay.com/v1/checkout.js";
-          script.onload = resolve;
-          document.body.appendChild(script);
-        });
-      }
-
-      const options = {
-        key: keyId,
-        amount: order?.amount || 3700000,
-        currency: order?.currency || "INR",
-        name: "Auctra Procurement",
-        description: `Escrow Fund Lock for ${contractState.poNumber || "PO-2026-72469"}`,
-        order_id: order?.id,
-        prefill: {
-          name: "Acme Technologies India Pvt Ltd",
-          email: "procurement@acmetech.in",
-          contact: "+919876543210"
-        },
-        theme: { color: "#2563EB" },
-        handler: async function (response) {
-          console.log("[Razorpay] Payment Succeeded:", response);
-          await progressEscrow("FUNDS_LOCKED");
+      if (keyId && !keyId.includes("placeholder") && !keyId.includes("sandbox")) {
+        if (!window.Razorpay) {
+          await new Promise((resolve) => {
+            const script = document.createElement("script");
+            script.src = "https://checkout.razorpay.com/v1/checkout.js";
+            script.onload = resolve;
+            document.body.appendChild(script);
+          });
         }
-      };
 
-      const rzp = new window.Razorpay(options);
-      rzp.on("payment.failed", function (resp) {
-        console.error("Razorpay Payment Failed:", resp.error);
-        alert("Payment canceled or failed: " + resp.error.description);
-      });
-      rzp.open();
+        const options = {
+          key: keyId,
+          amount: order?.amount || 3700000,
+          currency: order?.currency || "INR",
+          name: "Auctra Procurement",
+          description: `Escrow Fund Lock for ${contractState.poNumber || "PO-2026-72469"}`,
+          order_id: order?.id,
+          prefill: {
+            name: "Acme Technologies India Pvt Ltd",
+            email: "procurement@acmetech.in",
+            contact: "+919876543210"
+          },
+          theme: { color: "#2563EB" },
+          handler: async function (response) {
+            console.log("[Razorpay] Payment Succeeded:", response);
+            await progressEscrow("FUNDS_LOCKED");
+          }
+        };
+
+        const rzp = new window.Razorpay(options);
+        rzp.on("payment.failed", function (resp) {
+          console.error("Razorpay Payment Failed:", resp.error);
+          alert("Payment canceled or failed: " + resp.error.description);
+        });
+        rzp.open();
+      } else {
+        // Simulated Escrow Funding Transition
+        await progressEscrow("FUNDS_LOCKED");
+      }
     } catch (err) {
-      console.warn("Razorpay fallback to local state:", err);
+      console.warn("Razorpay fallback to simulated state:", err);
       progressEscrow("FUNDS_LOCKED");
     } finally {
       setIsOpeningRazorpay(false);
@@ -171,7 +176,7 @@ export default function Step5RazorpaySettlement() {
           <div>
             <div className="text-[12px] font-medium text-[#64748B]">Settlement Infrastructure</div>
             <div className="text-[15px] font-bold text-[#0F172A] mt-1">
-              Razorpay Smart Route
+              Razorpay Settlement Workflow
             </div>
             <div className="text-[11px] font-medium text-[#2563EB] mt-0.5">
               Powered by Razorpay Payment Infrastructure

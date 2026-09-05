@@ -12,6 +12,8 @@ import {
   BookOpen,
   FileText,
   Scale, 
+  ShieldCheck,
+  Headphones,
   Plus,
   RotateCcw,
   Compass,
@@ -84,11 +86,11 @@ export default function EnterpriseNavbar() {
             </div>
 
             <div 
-              className="hidden xl:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] text-[11px] font-semibold text-[#1D4ED8] ml-2"
+              className="hidden xl:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] text-[11px] font-semibold text-[#065F46] ml-2"
               title="Live Procurement Network"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-[#2563EB] animate-pulse" />
-              <span>Demo Environment</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
+              <span>Live Operations</span>
             </div>
           </Link>
 
@@ -186,6 +188,30 @@ export default function EnterpriseNavbar() {
                   </Link>
 
                   <Link
+                    href="/security"
+                    onClick={() => {
+                      setCurrentView("security");
+                      setShowResources(false);
+                    }}
+                    className="w-full text-left px-3 py-2 text-[12.5px] font-medium text-[#0F172A] hover:bg-[#F8FAFC] rounded-[10px] flex items-center gap-2 transition-colors cursor-pointer"
+                  >
+                    <ShieldCheck size={14} className="text-[#0284C7]" />
+                    <span>Security &amp; Compliance</span>
+                  </Link>
+
+                  <Link
+                    href="/support"
+                    onClick={() => {
+                      setCurrentView("support");
+                      setShowResources(false);
+                    }}
+                    className="w-full text-left px-3 py-2 text-[12.5px] font-medium text-[#0F172A] hover:bg-[#F8FAFC] rounded-[10px] flex items-center gap-2 transition-colors cursor-pointer"
+                  >
+                    <Headphones size={14} className="text-[#F59E0B]" />
+                    <span>Enterprise Support &amp; SLA</span>
+                  </Link>
+
+                  <Link
                     href="/evaluation"
                     onClick={() => {
                       setCurrentView("evaluation");
@@ -216,7 +242,7 @@ export default function EnterpriseNavbar() {
             {/* One-Click Reset Demo Button */}
             <button
               onClick={handleReset}
-              title="Reset to clean demo environment"
+              title="Reset to clean baseline environment"
               className={`h-9 px-3 text-[12.5px] font-medium rounded-[12px] border transition-all flex items-center gap-1.5 cursor-pointer ${
                 resetSuccess 
                   ? "bg-[#F0FDF4] text-[#16A34A] border-[#BBF7D0]" 
@@ -224,7 +250,7 @@ export default function EnterpriseNavbar() {
               }`}
             >
               <RotateCcw size={13} className={resetSuccess ? "animate-spin" : ""} />
-              <span className="hidden md:inline">{resetSuccess ? "Reset Applied!" : "Reset Demo"}</span>
+              <span className="hidden md:inline">{resetSuccess ? "Reset Applied!" : "Reset Environment"}</span>
             </button>
 
             {/* Primary Action Button */}

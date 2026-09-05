@@ -10,7 +10,8 @@ import {
   Plus,
   Layers,
   FileText,
-  Scale
+  Scale,
+  ShieldCheck
 } from "lucide-react";
 
 export default function Topbar() {
@@ -120,6 +121,26 @@ export default function Topbar() {
                   <Layers size={13} className="text-purple-600" />
                   <span>Architecture</span>
                 </button>
+                <button
+                  onClick={() => {
+                    setIsResourcesMenuOpen(false);
+                    setCurrentView("security");
+                  }}
+                  className="w-full text-left px-3 py-1.5 hover:bg-slate-50 text-slate-800 font-normal cursor-pointer flex items-center gap-2"
+                >
+                  <ShieldCheck size={13} className="text-sky-600" />
+                  <span>Security &amp; Compliance</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setIsResourcesMenuOpen(false);
+                    setCurrentView("support");
+                  }}
+                  className="w-full text-left px-3 py-1.5 hover:bg-slate-50 text-slate-800 font-normal cursor-pointer flex items-center gap-2"
+                >
+                  <BookOpen size={13} className="text-amber-600" />
+                  <span>Enterprise Support &amp; SLA</span>
+                </button>
                 <div className="h-px bg-slate-100 my-1" />
                 <button
                   onClick={() => {
@@ -128,7 +149,7 @@ export default function Topbar() {
                   }}
                   className="w-full text-left px-3 py-1.5 hover:bg-slate-50 text-slate-800 font-normal cursor-pointer flex items-center gap-2"
                 >
-                  <Scale size={13} className="text-amber-600" />
+                  <Scale size={13} className="text-slate-600" />
                   <span>Evaluation &amp; Methodology</span>
                 </button>
               </div>

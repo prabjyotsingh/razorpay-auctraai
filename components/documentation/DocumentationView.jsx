@@ -53,7 +53,7 @@ export default function DocumentationView() {
     {
       method: "POST",
       path: "/api/settlement/razorpay",
-      desc: "Executes state transitions and Smart Route payouts for escrow custody.",
+      desc: "Executes state transitions and automated disbursements for escrow settlements.",
       body: `{
   "action": "init" | "advance",
   "contract": { "id": "CTR-2024-8842", "grossAmount": 268000 },
@@ -102,7 +102,7 @@ export default function DocumentationView() {
               Auctra AI Developer Documentation
             </h1>
             <p className="text-sm text-slate-300 mt-1 max-w-2xl">
-              Complete technical documentation for APIs, Chrome Extension integration, Razorpay Smart Route custody, and database schemas.
+              Complete technical documentation for APIs, Chrome Extension integration, Razorpay settlement workflows, and database schemas.
             </p>
           </div>
 
@@ -265,10 +265,10 @@ export default function DocumentationView() {
         <div className="enterprise-card p-6 space-y-5">
           <div className="flex items-center gap-2">
             <Landmark size={20} className="text-[#2563EB]" />
-            <h3 className="text-base font-bold text-[#0F172A]">Reserve Bank of India (RBI) Escrow Compliance</h3>
+            <h3 className="text-base font-bold text-[#0F172A]">Razorpay Payment &amp; Escrow Settlement</h3>
           </div>
           <p className="text-xs text-[#64748B] leading-relaxed">
-            All commercial transactions processed through Auctra follow the RBI nodal account directive powered by Razorpay Payment Infrastructure.
+            All commercial transactions processed through Auctra follow milestone-based settlement workflows powered by Razorpay Payment Infrastructure.
           </p>
 
           <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-900 leading-relaxed space-y-2">

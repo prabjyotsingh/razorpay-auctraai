@@ -180,7 +180,7 @@ export default function Step4ContractGeneration() {
           <ol className="list-decimal pl-4 space-y-1 text-[#64748B] text-[12.5px]">
             <li><strong className="text-[#0F172A]">Guaranteed Delivery:</strong> Dispatch within 48 hours from contract execution date.</li>
             <li><strong className="text-[#0F172A]">Quality Acceptance:</strong> 3-day inspection window upon delivery prior to milestone payment release.</li>
-            <li><strong className="text-[#0F172A]">Payment Protection:</strong> Funds held in neutral RBI Nodal custody powered by Razorpay Payment Infrastructure.</li>
+            <li><strong className="text-[#0F172A]">Payment Protection:</strong> Funds secured in escrow powered by Razorpay Payment Infrastructure.</li>
           </ol>
         </div>
 

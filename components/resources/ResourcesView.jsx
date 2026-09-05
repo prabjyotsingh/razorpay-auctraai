@@ -11,7 +11,7 @@ import {
   ArrowRight, 
   Landmark, 
   FileText, 
-  Cpu, 
+  Headphones,
   PackageCheck,
   CheckCircle2,
   Building2,
@@ -37,35 +37,36 @@ export default function ResourcesView() {
       color: "indigo"
     },
     {
+      title: "Security & Compliance",
+      description: "Razorpay payment integration, SHA-256 cryptographic verification, Modulo-36 GSTIN audits, and SOC2 readiness.",
+      icon: ShieldCheck,
+      href: "/security",
+      tag: "Trust & Safety",
+      color: "emerald"
+    },
+    {
+      title: "Enterprise Support & SLAs",
+      badge: "48-Hour SLA",
+      description: "Enterprise helpdesk, ERP PunchOut integration advisory, solutions engineering, and priority incident triage.",
+      icon: Headphones,
+      href: "/support",
+      tag: "Client Services",
+      color: "amber"
+    },
+    {
       title: "System Evaluation",
       description: "Auditing guidelines, multi-agent constraint logic, floor margin protection proofs, and procurement benchmarks.",
       icon: Scale,
       href: "/evaluation",
       tag: "Audit & Verification",
-      color: "emerald"
-    },
-    {
-      title: "Razorpay Escrow Protocol",
-      description: "RBI-compliant nodal custodial escrow infrastructure, 3-way matching logic, and Smart Route automated disbursements.",
-      icon: Landmark,
-      href: "/escrow",
-      tag: "Payment Rails",
       color: "purple"
     },
     {
-      title: "Procurement Copilot Extension",
-      description: "Manifest V3 multi-marketplace supplier extraction engine with sub-200ms DOM scraping on IndiaMART and Amazon.",
-      icon: PackageCheck,
-      href: "/extension",
-      tag: "Browser Client",
-      color: "amber"
-    },
-    {
-      title: "Autonomous Fleet Intelligence",
-      description: "Live Groq 120B negotiation coordinator, Modulo-36 GSTIN verification, and multi-supplier competitive auctioning.",
-      icon: Bot,
-      href: "/auctions",
-      tag: "Agent Engine",
+      title: "Razorpay Escrow Settlement",
+      description: "Razorpay payment infrastructure, digital 3-way matching logic, and milestone-based disbursement tracking.",
+      icon: Landmark,
+      href: "/escrow",
+      tag: "Payment Rails",
       color: "cyan"
     }
   ];
@@ -83,7 +84,7 @@ export default function ResourcesView() {
             Auctra AI Resources &amp; System Infrastructure
           </h1>
           <p className="text-sm text-[#64748B] mt-1">
-            Explore architectural blueprints, API documentation, evaluation frameworks, and deployment guides for Auctra Autonomous Procurement.
+            Explore architectural blueprints, developer API documentation, enterprise security compliance, and support services for Auctra Autonomous Procurement.
           </p>
         </div>
       </div>

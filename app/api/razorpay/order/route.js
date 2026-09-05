@@ -70,7 +70,7 @@ export async function POST(req) {
     return NextResponse.json({
       success: true,
       order: simulatedOrder,
-      keyId: keyId || "rzp_test_auctra_sandbox",
+      keyId: keyId || "",
       mode: "SANDBOX"
     });
   } catch (error) {

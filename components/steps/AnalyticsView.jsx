@@ -169,7 +169,7 @@ export default function AnalyticsView() {
                 <td className="py-3 px-4 font-semibold text-[#0F172A]">Escrow Fund Locking &amp; Milestone Release</td>
                 <td className="py-3 px-4 text-right font-mono text-[#64748B]">3-5 Days</td>
                 <td className="py-3 px-4 text-right font-mono font-bold text-[#2563EB]">1-Click Route</td>
-                <td className="py-3 px-4 text-right font-semibold text-[#10B981]">RBI Nodal Smart Route Escrow</td>
+                <td className="py-3 px-4 text-right font-semibold text-[#10B981]">Razorpay Settlement Workflow</td>
               </tr>
             </tbody>
           </table>

@@ -103,7 +103,7 @@ export default function EvaluationView() {
               : "border-transparent text-[#64748B] hover:text-[#0F172A]"
           }`}
         >
-          3. Razorpay Smart Route Escrow
+          3. Razorpay Escrow Settlement
         </button>
         <button
           onClick={() => setActiveTab("evolution")}
@@ -152,9 +152,9 @@ export default function EvaluationView() {
             <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
               <Landmark size={20} />
             </div>
-            <h3 className="text-base font-bold text-[#0F172A]">Razorpay Nodal Escrow</h3>
+            <h3 className="text-base font-bold text-[#0F172A]">Razorpay Escrow Settlement</h3>
             <p className="text-xs text-[#64748B] leading-relaxed">
-              RBI-compliant custodial fund locking. Funds stay protected until digital 3-way match (PO = Invoice = Delivery Receipt) triggers Razorpay Smart Route automated vendor disbursement.
+              Milestone-based payment fund locking. Funds stay protected until digital 3-way match (PO = Invoice = Delivery Receipt) triggers Razorpay automated vendor disbursement.
             </p>
             <div className="pt-2 border-t border-[#EEF2F7] flex items-center justify-between text-[11px] text-[#2563EB] font-semibold">
               <span>lib/payments/razorpayEscrow.js</span>
@@ -297,8 +297,8 @@ export default function EvaluationView() {
               <p className="text-slate-600 mt-1">Legally binding commercial PO and contract generation with digital sign-offs.</p>
             </div>
             <div className="p-3.5 bg-[#F8FAFC] rounded-xl border border-[#EEF2F7]">
-              <span className="font-bold text-slate-900">Razorpay Escrow Custody:</span>
-              <p className="text-slate-600 mt-1">RBI-compliant settlement via Razorpay Smart Route nodal virtual accounts.</p>
+              <span className="font-bold text-slate-900">Razorpay Escrow Settlement:</span>
+              <p className="text-slate-600 mt-1">Payment authorization and settlement tracking via Razorpay payment workflow.</p>
             </div>
           </div>
         </div>

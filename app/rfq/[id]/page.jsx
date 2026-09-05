@@ -39,6 +39,7 @@ export default function RfqWorkspacePage() {
 
   const [rfq, setRfq] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedQuantity, setSelectedQuantity] = useState(50);
 
   useEffect(() => {
     async function fetchRfq() {
@@ -47,6 +48,8 @@ export default function RfqWorkspacePage() {
         const data = await res.json();
         if (data.success && data.rfq) {
           setRfq(data.rfq);
+          const initQty = Math.min(100, Math.max(10, Number(data.rfq.quantity || data.rfq.moq) || 50));
+          setSelectedQuantity(initQty);
         } else {
           setRfq({
             id: rfqId,
@@ -64,6 +67,7 @@ export default function RfqWorkspacePage() {
             estimatedTotal: 4049500,
             category: "Commercial Sourcing"
           });
+          setSelectedQuantity(50);
         }
       } catch (err) {
         console.warn("Could not fetch RFQ from API, using default:", err);
@@ -75,42 +79,70 @@ export default function RfqWorkspacePage() {
     fetchRfq();
   }, [rfqId]);
 
+  const handleQuantityChange = (val) => {
+    if (val === "" || val === null || val === undefined) {
+      setSelectedQuantity("");
+      return;
+    }
+    const num = parseInt(String(val).replace(/[^\d]/g, ""), 10);
+    if (isNaN(num)) return;
+    const clamped = Math.min(100, Math.max(10, num));
+    setSelectedQuantity(clamped);
+  };
+
+  const handleBlurQuantity = () => {
+    if (selectedQuantity === "" || isNaN(selectedQuantity) || selectedQuantity < 10) {
+      setSelectedQuantity(10);
+    } else if (selectedQuantity > 100) {
+      setSelectedQuantity(100);
+    }
+  };
+
+  const handleIncrement = () => {
+    const current = Number(selectedQuantity) || 50;
+    if (current < 100) {
+      setSelectedQuantity(Math.min(100, current + 5));
+    }
+  };
+
+  const handleDecrement = () => {
+    const current = Number(selectedQuantity) || 50;
+    if (current > 10) {
+      setSelectedQuantity(Math.max(10, current - 5));
+    }
+  };
+
+  const effectiveQty = Number(selectedQuantity) || 10;
+  const unitPrice = Number(rfq?.price) || 80990;
+  const quantity = effectiveQty;
+  const estimatedTotal = unitPrice * quantity;
+  const projectedSavingsPct = 14.2;
+  const projectedSavingsAmount = Math.round(estimatedTotal * 0.142);
+  const displayTitle = rfq?.productName || "Sourced Marketplace SKU";
+
   const handleLaunchAuction = () => {
     if (!rfq) return;
-    loadRfqAndLaunchAuction(rfq);
+    const rfqWithQty = {
+      ...rfq,
+      quantity,
+      moq: quantity,
+      estimatedTotal
+    };
+    loadRfqAndLaunchAuction(rfqWithQty);
     router.push("/auctions");
   };
 
   const handleCompareSuppliers = () => {
     if (!rfq) return;
-    loadRfqAndFindSuppliers(rfq);
+    const rfqWithQty = {
+      ...rfq,
+      quantity,
+      moq: quantity,
+      estimatedTotal
+    };
+    loadRfqAndFindSuppliers(rfqWithQty);
     router.push("/suppliers");
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#FAFAFA] text-[#0F172A] flex flex-col font-sans">
-        <EnterpriseNavbar />
-        <div className="flex-1 flex items-center justify-center p-6">
-          <div className="text-center space-y-3 bg-white p-8 rounded-2xl border border-[#EEF2F7] shadow-sm">
-            <div className="w-10 h-10 rounded-xl bg-[#2563EB] text-white font-semibold flex items-center justify-center mx-auto text-sm animate-pulse shadow-md shadow-blue-500/20">
-              A
-            </div>
-            <div className="text-sm font-semibold text-[#0F172A]">Loading RFQ Workspace...</div>
-            <div className="text-xs text-[#64748B]">Verifying catalog quotes and participating supplier fleet</div>
-          </div>
-        </div>
-        <EnterpriseFooter />
-      </div>
-    );
-  }
-
-  const unitPrice = Number(rfq?.price) || 80990;
-  const quantity = Number(rfq?.quantity || rfq?.moq) || 50;
-  const estimatedTotal = unitPrice * quantity;
-  const projectedSavingsPct = 14.2;
-  const projectedSavingsAmount = Math.round(estimatedTotal * 0.142);
-  const displayTitle = rfq?.productName || "Sourced Marketplace SKU";
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] text-[#0F172A] flex flex-col font-sans">
@@ -189,12 +221,71 @@ export default function RfqWorkspacePage() {
             <div className="text-[11px] text-[#94A3B8] mt-1">Marketplace baseline ceiling</div>
           </div>
 
-          <div className="bg-white border border-[#EEF2F7] rounded-xl p-5 shadow-xs">
-            <div className="text-xs font-semibold text-[#64748B] uppercase tracking-wider">MOQ Batch Size</div>
-            <div className="text-2xl font-bold text-[#0F172A] font-mono mt-1">
-              {quantity} Units
+          <div className="bg-white border border-[#EEF2F7] rounded-xl p-4 shadow-xs flex flex-col justify-between space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-semibold text-[#64748B] uppercase tracking-wider">
+                Order Quantity (MOQ)
+              </span>
+              <span className="text-[10px] font-semibold text-[#2563EB] bg-[#EFF6FF] px-2 py-0.5 rounded-full border border-[#BFDBFE]">
+                Min 10 • Max 100
+              </span>
             </div>
-            <div className="text-[11px] text-[#94A3B8] mt-1">Minimum commercial lot</div>
+
+            {/* Stepper with Controls */}
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={handleDecrement}
+                disabled={effectiveQty <= 10}
+                className="w-8 h-8 rounded-lg bg-[#F8FAFC] border border-[#CBD5E1] hover:bg-[#F1F5F9] disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center text-[#0F172A] font-bold text-base transition-colors cursor-pointer shrink-0"
+                title="Decrease quantity by 5 (min 10)"
+              >
+                –
+              </button>
+
+              <div className="relative flex-1">
+                <input
+                  type="number"
+                  min={10}
+                  max={100}
+                  value={selectedQuantity}
+                  onChange={(e) => handleQuantityChange(e.target.value)}
+                  onBlur={handleBlurQuantity}
+                  className="w-full h-8 text-center text-lg font-bold font-mono text-[#0F172A] bg-white border border-[#CBD5E1] rounded-lg focus:outline-none focus:border-[#2563EB] focus:ring-1 focus:ring-[#2563EB] transition-all"
+                />
+                <span className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-medium text-[#64748B] pointer-events-none hidden sm:inline">
+                  Units
+                </span>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleIncrement}
+                disabled={effectiveQty >= 100}
+                className="w-8 h-8 rounded-lg bg-[#F8FAFC] border border-[#CBD5E1] hover:bg-[#F1F5F9] disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center text-[#0F172A] font-bold text-base transition-colors cursor-pointer shrink-0"
+                title="Increase quantity by 5 (max 100)"
+              >
+                +
+              </button>
+            </div>
+
+            {/* Quick Presets */}
+            <div className="flex items-center gap-1">
+              {[10, 25, 50, 75, 100].map((preset) => (
+                <button
+                  key={preset}
+                  type="button"
+                  onClick={() => handleQuantityChange(preset)}
+                  className={`flex-1 py-0.5 text-[10.5px] font-semibold rounded-md border transition-all cursor-pointer ${
+                    effectiveQty === preset
+                      ? "bg-[#2563EB] text-white border-[#2563EB] shadow-2xs"
+                      : "bg-[#F8FAFC] text-[#475569] border-[#E2E8F0] hover:bg-[#F1F5F9]"
+                  }`}
+                >
+                  {preset}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div className="bg-white border border-[#EEF2F7] rounded-xl p-5 shadow-xs">
@@ -400,7 +491,7 @@ export default function RfqWorkspacePage() {
               </div>
 
               <p className="text-[12px] text-[#475569] leading-relaxed">
-                Procurement funds remain secured in an RBI-regulated Nodal Escrow account throughout the auction and fulfillment cycle. Payment is released to the winning vendor only after quality inspection gate sign-off.
+                Procurement funds remain secured in escrow powered by Razorpay Payment Infrastructure throughout the auction and fulfillment cycle. Payment is released to the winning vendor only after quality inspection gate sign-off.
               </p>
 
               <div className="pt-2 border-t border-[#F1F5F9] space-y-1.5 text-[11px] text-[#64748B]">

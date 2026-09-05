@@ -2,13 +2,13 @@
 
 <div align="center">
 
-# AI-Powered Procurement & Supplier Management Platform
+# AI-Powered Autonomous Procurement & Supplier Management Platform
 
-Transform supplier discovery into competitive sourcing, automate procurement workflows, and streamline purchasing decisions through a unified procurement platform.
+Transform supplier discovery into competitive sourcing, automate reverse auctions, and streamline purchasing decisions through a unified procurement platform.
 
-![Next.js](https://img.shields.io/badge/Next.js-15-black)
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
 ![React](https://img.shields.io/badge/React-19-blue)
-![JavaScript](https://img.shields.io/badge/JavaScript-5.0-blue)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.0-38BDF8)
 ![Razorpay](https://img.shields.io/badge/Razorpay-Integrated-02042B)
 
@@ -16,31 +16,56 @@ Transform supplier discovery into competitive sourcing, automate procurement wor
 
 ---
 
-# Overview
+## ⚡ The 30-Second Demo Story
 
-Procurement teams often spend days collecting quotations, evaluating suppliers, negotiating prices, generating purchase orders, and coordinating payments across multiple systems.
+### The Problem
+Traditional enterprise procurement teams waste days on manual, fragmented workflows:
+- ❌ **Finding suppliers** across disjointed directories and marketplaces
+- ❌ **Comparing quotations** with unstandardized specs and ambiguous delivery SLAs
+- ❌ **Negotiating pricing** via endless emails without competitive transparency
+- ❌ **Creating purchase orders** through slow manual contract drafting
+- ❌ **Managing settlements** with high counterparty risk and delayed payouts
 
-**Auctra AI** centralizes this workflow into a single platform that enables organizations to:
+### The Solution: Auctra AI
+Auctra AI automates the entire procurement lifecycle end-to-end:
 
-- Create procurement requests (RFQs)
-- Discover and evaluate suppliers
-- Run competitive reverse auctions
-- Generate purchase orders and contracts
-- Manage payment workflows
-- Track procurement performance through analytics
+$$\text{Supplier Discovery} \longrightarrow \text{Reverse Auction} \longrightarrow \text{Contract Generation} \longrightarrow \text{Settlement Workflow}$$
 
-The result is a faster, more transparent, and more efficient procurement process.
+1. **Supplier Discovery**: 1-click Chrome Extension extracts listings from IndiaMART, Alibaba, and Amazon Business into standardized RFQs with instant 15-digit GSTIN Modulo-36 verification.
+2. **Reverse Auction**: Algorithmic multi-round dynamic bidding drives down unit costs against budget ceilings while protecting vendor floor margins.
+3. **Contract Generation**: Legally binding Purchase Orders generated in `<1s` with dual digital signatures and PDF downloads.
+4. **Settlement Workflow**: Milestone-based payment custody and settlement tracking powered by Razorpay Payment Infrastructure.
+
+---
+
+## 📸 Product Walkthrough & Screenshots
+
+### 1. Executive Procurement Dashboard
+Real-time visibility into annual spend, cost savings, active RFQs, and vendor SLA benchmarks.
+![Executive Dashboard](docs/screenshots/dashboard.png)
+
+### 2. Live Reverse Auction Engine
+Real-time unit price deflation curve with multi-round bids from 10 verified enterprise auctioneers.
+![Live Reverse Auction](docs/screenshots/auction.png)
+
+### 3. Verified Supplier Fleet & RFQs
+Audited suppliers with GSTIN check-digit verification, SLA scores, and itemized quotations.
+![Suppliers & RFQs](docs/screenshots/suppliers.png)
+
+### 4. Digital Purchase Orders & Contracts
+Legally binding commercial contracts with itemized GST tax breakdowns and dual digital sign-offs.
+![Contracts & PO](docs/screenshots/contracts.png)
+
+### 5. Chrome Extension Copilot
+1-click marketplace sourcing from IndiaMART, Amazon Business, and Alibaba directly into Auctra.
+![Chrome Extension Sourcing](docs/screenshots/extension.png)
 
 ---
 
 # Key Features
 
 ## Procurement Management
-
 Create and manage sourcing requests through a structured procurement workflow.
-
-### Capabilities
-
 - RFQ Creation
 - Budget Management
 - Quantity Management
@@ -50,134 +75,110 @@ Create and manage sourcing requests through a structured procurement workflow.
 ---
 
 ## Supplier Discovery
-
 Discover and evaluate suppliers from multiple sourcing channels.
-
-### Capabilities
-
 - Supplier Database
-- Vendor Qualification
-- Supplier Comparison
+- 15-digit GSTIN Modulo-36 Verification
+- Supplier Comparison & Trust Scoring
 - Supplier Profiles
-- Supplier Performance Insights
+- SLA & Fulfillment Insights
 
 ---
 
 ## Reverse Auctions
-
 Drive supplier competition and improve procurement outcomes.
-
-### Capabilities
-
-- Live Bidding Environment
-- Bid Comparison
-- Supplier Ranking
-- Savings Tracking
-- Supplier Competition Analysis
+- Real-time Multi-Round Bidding Environment
+- Dynamic Unit Price Deflation Curve
+- 10 Active Verified Enterprise Auctioneers
+- Floor Margin Guard Protection (8–15%)
+- Automated Savings Calculation
 
 ---
 
 ## Contract Management
-
 Generate procurement documentation and maintain audit-ready records.
-
-### Capabilities
-
 - Purchase Order Generation
-- Contract Creation
-- Approval Workflows
+- Legally Binding Commercial Contracts
+- Dual Digital Sign-off Verification
 - Procurement Audit Trails
-- PDF Export
+- Instant Vector PDF Export
 
 ---
 
 ## Payment & Settlement
-
 Manage procurement transactions and payment workflows.
-
-### Capabilities
-
-- Payment Tracking
-- Settlement Monitoring
-- Purchase Reconciliation
-- Transaction History
+- Powered by Razorpay Payment Infrastructure
+- Milestone-Based Escrow Fund Locking
+- Digital 3-Way Match Verification (PO = Invoice = Delivery Receipt)
+- Settlement Monitoring & Audit Logs
 
 ---
 
 ## Spend Analytics
-
 Gain visibility into procurement performance.
-
-### Capabilities
-
-- Spend Analysis
-- Savings Tracking
+- Spend Analysis & Annual Commitments
+- Realized Cost Reduction
 - Procurement Reporting
 - Supplier Performance Metrics
-- Procurement Activity Monitoring
+- Cycle Time Analytics
 
 ---
 
-## Browser Extension
-
+## Browser Extension (Manifest V3)
 Capture supplier information directly from supplier marketplaces and instantly create procurement requests.
 
 ### Supported Platforms
-
 - IndiaMART
 - Amazon Business
 - Alibaba
 - TradeIndia
 
 ### Features
-
-- One-Click RFQ Creation
+- One-Click RFQ Creation (<200ms extraction)
 - Product Information Extraction
 - Supplier Information Capture
 - Marketplace Integration
-- Procurement Workflow Synchronization
+- Direct Routing to Dedicated `/rfq/[id]` Workspace
 
 ---
 
 # System Architecture
 
-Auctra AI is designed as a modular procurement platform that orchestrates supplier discovery, competitive bidding, contract management, and payment settlement through a unified workflow.
-
 ```mermaid
 graph TD
 
-    subgraph S1["Requisition Ingestion"]
+    subgraph S1["1. Requisition Ingestion"]
         EXT["Chrome Extension (Manifest V3)"]
         WEB["AI RFQ Creator"]
-        EXT --> API_INGEST["RFQ Creation API"]
-        WEB --> API_INTENT["Intent Processing Engine"]
+        EXT --> API_INGEST["/api/extension/create-rfq"]
+        WEB --> API_INTENT["/api/intent"]
     end
 
-    subgraph S2["Supplier Discovery"]
-        API_INGEST --> SUP_DB[("Supplier Repository")]
+    subgraph S2["2. Discovery & Verification"]
+        API_INGEST --> SUP_DB[("Verified Supplier Fleet")]
         API_INTENT --> SUP_DB
-        SUP_DB --> VERIFY["Supplier Verification"]
-        VERIFY --> PROFILE["Supplier Intelligence"]
+        SUP_DB --> VERIFY["GSTIN Modulo-36 Check"]
+        VERIFY --> PROFILE["Supplier Intelligence & SLA"]
     end
 
-    subgraph S3["Competitive Sourcing"]
+    subgraph S3["3. Dynamic Reverse Auction"]
         PROFILE --> AUCTION["Reverse Auction Engine"]
-        AUCTION --> RANKING["Bid Evaluation"]
-        RANKING --> SLA["Delivery & Risk Scoring"]
-        SLA --> WINNER["Winning Supplier Selection"]
+        AUCTION --> RANKING["Multi-Round Bidding (10 Vendors)"]
+        RANKING --> SLA["Floor Margin Guard (8-15%)"]
+        SLA --> WINNER["Winning Supplier Declaration"]
     end
 
-    subgraph S4["Contract Management"]
-        WINNER --> PO["Purchase Order Generation"]
-        PO --> APPROVAL["Approval Workflow"]
-        APPROVAL --> CONTRACT["Contract Creation"]
-        CONTRACT --> EXPORT["PDF Export"]
+    subgraph S4["4. Purchase Order Contract"]
+        WINNER --> PO["Purchase Order Synthesis"]
+        PO --> APPROVAL["Dual Digital Sign-off"]
+        APPROVAL --> CONTRACT["Commercial Contract"]
+        CONTRACT --> EXPORT["Vector PDF Export"]
     end
 
-    subgraph S5["Payment & Settlement"]
-        CONTRACT --> PAYMENT["Payment Processing"]
-        PAYMENT --> RECON["Purchase Reconciliation"]
-        RECON --> AUDIT["Audit & Settlement Records"]
+    subgraph S5["5. Payment & Settlement Workflow"]
+        APPROVAL --> RZP_ORDER["/api/razorpay/order"]
+        RZP_ORDER --> RZP_ESCROW["Razorpay Payment Fund Lock"]
+        RZP_ESCROW --> THREE_WAY["3-Way Match (PO = Invoice = Delivery)"]
+        THREE_WAY --> RZP_SETTLE["Milestone Settlement Tracking"]
     end
 ```
 
@@ -186,31 +187,28 @@ graph TD
 # Procurement Workflow
 
 ```text
-Supplier Marketplace
+Supplier Marketplace (IndiaMART / Alibaba / Amazon)
         │
         ▼
-Chrome Extension
+Chrome Extension (1-Click Extract)
         │
         ▼
-Create RFQ
+Create RFQ (/rfq/[id] Workspace)
         │
         ▼
-Supplier Discovery
+Supplier Discovery & GSTIN Audit
         │
         ▼
-Reverse Auction
+Live Reverse Auction (10 Competing Suppliers)
         │
         ▼
-Supplier Selection
+Winning Supplier Selection
         │
         ▼
-Purchase Order
+Purchase Order & Contract Generation
         │
         ▼
-Contract Generation
-        │
-        ▼
-Payment & Settlement
+Payment & Settlement via Razorpay
 ```
 
 ---
@@ -218,71 +216,74 @@ Payment & Settlement
 # Technology Stack
 
 ## Frontend
+- Next.js 16 (App Router)
+- React 19
+- JavaScript (ES6+)
+- Tailwind CSS v4
 
-- Next.js
-- React
-- JavaScript
-- Tailwind CSS
+## Backend & APIs
+- Next.js Server Route Handlers
+- REST APIs (`/api/extension/create-rfq`, `/api/razorpay/order`, `/api/intent`)
 
-## Backend
-
-- Next.js API Routes
-- REST APIs
-
-## Database
-
+## Database & ORM
 - PostgreSQL
 - Supabase
+- Prisma ORM
 
 ## Browser Extension
-
 - Chrome Extension Manifest V3
-- Service Workers
-- Content Scripts
+- Service Workers & Background Scripts
+- Content Scripts for IndiaMART, Amazon, TradeIndia, Alibaba
 - Chrome Storage API
 
 ## Payments
-
-- Razorpay Integration
+- Razorpay Payment Infrastructure Integration
+- Standard Checkout Modal
+- Webhook Handlers (`/api/razorpay/webhook`)
 
 ## State Management
-
-- Zustand
+- Zustand Reactive Store (`store/useProcurementStore.js`)
 
 ---
 
 # Project Structure
 
 ```bash
-auctra-ai/
-│
-├── app/
-│   ├── api/
-│   ├── dashboard/
-│   ├── rfq/
-│   └── layout/
-│
+auctra/
+├── app/                        # Next.js 16 App Router
+│   ├── api/                    # Route handlers (Razorpay, RFQ, Intent, Vendors)
+│   ├── rfq/[id]/               # Dedicated RFQ Workspace opened from Extension
+│   ├── documentation/          # Developer & REST API Documentation
+│   ├── resources/              # Enterprise Knowledge Hub
+│   ├── architecture/           # Interactive Technical Blueprint
+│   ├── security/               # Enterprise Trust & Compliance Center
+│   ├── support/                # Client Support Desk & SLA Ticketing
+│   ├── evaluation/             # Evaluation & Verification Playbook
+│   ├── globals.css             # Tailwind & Enterprise CSS tokens
+│   ├── layout.js               # Root layout & Google Fonts
+│   └── page.js                 # Single-page reactive application shell
 ├── components/
-│   ├── procurement/
-│   ├── suppliers/
-│   ├── auctions/
-│   ├── contracts/
-│   ├── analytics/
-│   └── ui/
-│
-├── extension/
-│   ├── manifest.json
-│   ├── background.js
-│   ├── content.js
-│   ├── popup.html
-│   ├── popup.js
-│   └── styles.css
-│
-├── lib/
-├── store/
-├── public/
-├── hooks/
-└── prisma/
+│   ├── dashboard/              # Executive KPI cards & active RFQ data grids
+│   ├── documentation/          # Documentation view & API specifications
+│   ├── evaluation/             # EvaluationView & EvaluationModal
+│   ├── extension/              # In-app Chrome Extension simulation sandbox
+│   ├── layout/                 # EnterpriseNavbar, Footer, Topbar
+│   ├── resources/              # ArchitectureView & ResourcesView
+│   ├── security/               # SecurityView compliance center
+│   ├── support/                # SupportView helpdesk & SLA ticketing
+│   ├── steps/                  # 5-stage procurement workflow views
+│   └── suppliers/              # Slide-over Supplier Profile Drawers
+├── docs/
+│   └── screenshots/            # High-resolution documentation screenshots
+├── extension/                  # Chrome Extension Manifest V3 source code
+│   ├── manifest.json           # Extension permissions and host patterns
+│   ├── popup.html / popup.js   # Extension UI & market opportunity engine
+│   ├── content.js              # Marketplace scrapers (IndiaMART, Amazon, TradeIndia)
+│   └── background.js           # Service worker & tab coordination
+├── lib/                        # Domain logic (Auctions, GSTIN check, Contracts, Razorpay)
+├── prisma/                     # Database schema & seed data
+├── public/                     # Static assets, brand marks, and extension ZIP
+└── store/                      # Zustand store (useProcurementStore.js)
 ```
 
 ---
@@ -293,7 +294,6 @@ auctra-ai/
 
 ```bash
 git clone https://github.com/prabjyotsingh/razorpay-auctraai.git
-
 cd razorpay-auctraai
 ```
 
@@ -326,11 +326,7 @@ SUPABASE_ANON_KEY=your_supabase_anon_key
 npm run dev
 ```
 
-Open:
-
-```text
-http://localhost:3000
-```
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
@@ -339,15 +335,10 @@ http://localhost:3000
 ## Load Extension in Chrome
 
 1. Open Chrome
-2. Navigate to:
-
-```text
-chrome://extensions
-```
-
-3. Enable **Developer Mode**
+2. Navigate to `chrome://extensions`
+3. Enable **Developer Mode** (toggle in the top-right corner)
 4. Click **Load Unpacked**
-5. Select the `/extension` folder
+5. Select the `extension` folder
 6. Pin the extension to the toolbar
 
 The extension is now available on supported supplier marketplaces.
@@ -357,84 +348,28 @@ The extension is now available on supported supplier marketplaces.
 # Example Use Case
 
 ### Scenario
-
 A procurement manager discovers a supplier listing on IndiaMART.
 
 ### Workflow
-
-1. Open supplier listing
+1. Open supplier listing on IndiaMART or Alibaba
 2. Launch Auctra AI Extension
-3. Capture supplier information
-4. Create RFQ
-5. Discover alternative suppliers
-6. Launch reverse auction
-7. Select supplier
-8. Generate purchase order
-9. Complete settlement workflow
+3. Capture supplier information and click **Create RFQ**
+4. Dedicated RFQ workspace opens automatically (`/rfq/[id]`)
+5. Discover alternative verified suppliers
+6. Launch reverse auction with 10 competing bidders
+7. Select winning supplier and generate Purchase Order
+8. Complete payment workflow powered by Razorpay
 
 ---
 
-# Analytics Dashboard
-
-Track procurement performance through:
-
-- Total Spend
-- Procurement Savings
-- Active RFQs
-- Supplier Performance
-- Contract Status
-- Procurement Activity
-- Procurement Cycle Time
-
----
-
-# Security
+# Security & Compliance
 
 Auctra AI follows secure application practices:
-
-- Secure API Communication
-- Environment Variable Management
-- Authentication Controls
-- Audit Logging
-- Transaction Monitoring
-- Access Control Mechanisms
-
----
-
-# Roadmap
-
-Future platform enhancements include:
-
-- Multi-User Collaboration
-- Advanced Approval Workflows
-- ERP Integrations
-- Supplier Scorecards
-- AI Procurement Recommendations
-- Predictive Spend Analytics
-- Mobile Applications
-- Advanced Reporting
-
----
-
-# Use Cases
-
-### Procurement Teams
-
-- Reduce sourcing cycle time
-- Improve supplier competition
-- Centralize procurement operations
-
-### Operations Teams
-
-- Standardize purchasing workflows
-- Improve procurement visibility
-- Monitor supplier activity
-
-### Growing Businesses
-
-- Expand supplier networks
-- Optimize purchasing decisions
-- Improve spend control
+- Secure API Communication & CORS protection
+- Strict Environment Variable Management (.env* ignored)
+- 15-Digit GSTIN Modulo-36 Check-Digit Verification
+- Audit Logging & Transaction Monitoring
+- Razorpay Payment Infrastructure Integration
 
 ---
 
@@ -449,7 +384,6 @@ This project is intended for educational, research, and demonstration purposes.
 **Auctra AI** is a modern procurement platform focused on supplier discovery, competitive sourcing, procurement automation, and payment orchestration.
 
 ### Mission
-
 Enable organizations to make faster, more informed purchasing decisions through streamlined procurement workflows and supplier intelligence.
 
 ---

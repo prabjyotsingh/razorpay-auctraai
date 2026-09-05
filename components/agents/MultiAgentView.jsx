@@ -182,8 +182,8 @@ export default function MultiAgentView() {
             <div className="space-y-1 pt-1">
               <label className="text-[#374151] font-medium">Escrow Payment Workflow:</label>
               <div className="p-3 bg-[#F9FAFB] rounded-md border border-[#E5E7EB] text-[11px] text-[#4B5563] space-y-1">
-                <div className="font-semibold text-[#111827]">Razorpay Smart Route Escrow</div>
-                <p className="text-[#6B7280]">100% of awarded PO capital locked in neutral nodal trust account. Payout release authorized only after digital QA verification.</p>
+                <div className="font-semibold text-[#111827]">Razorpay Escrow Settlement</div>
+                <p className="text-[#6B7280]">100% of awarded PO capital secured in escrow powered by Razorpay. Payout release authorized only after digital QA verification.</p>
               </div>
             </div>
           </div>

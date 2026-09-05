@@ -59,9 +59,9 @@ export default function EnterpriseFooter() {
               Enterprise procurement and escrow payment platform. Orchestrating verified supplier networks, real-time reverse auctions, and milestone escrow settlements.
             </p>
 
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#EFF6FF] border border-[#BFDBFE] text-[11.5px] font-semibold text-[#1D4ED8]">
-              <span className="w-2 h-2 rounded-full bg-[#2563EB] animate-pulse" />
-              <span>Demo Environment • Based on sample procurement dataset</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] text-[11.5px] font-semibold text-[#065F46]">
+              <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
+              <span>Enterprise Trust • Razorpay Payment Infrastructure</span>
             </div>
           </div>
 
@@ -158,7 +158,7 @@ export default function EnterpriseFooter() {
               </li>
               <li className="flex items-center gap-1.5">
                 <ShieldCheck size={14} className="text-[#10B981] shrink-0" />
-                <span>RBI Nodal Trust Escrow</span>
+                <span>Escrow &amp; Settlement Tracking</span>
               </li>
               <li className="flex items-center gap-1.5">
                 <ShieldCheck size={14} className="text-[#10B981] shrink-0" />

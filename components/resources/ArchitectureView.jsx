@@ -74,14 +74,14 @@ export default function ArchitectureView() {
     },
     {
       step: 5,
-      title: "Razorpay Escrow Custody",
+      title: "Razorpay Escrow Settlement",
       subtitle: "Powered by Razorpay Payment Infrastructure",
       icon: Landmark,
       color: "#0F172A",
       bgColor: "#F8FAFC",
       borderColor: "#E2E8F0",
-      summary: "Secures purchase order capital in a Reserve Bank of India (RBI) compliant nodal trust account until milestone inspection.",
-      techStack: ["Razorpay Orders API", "RBI Nodal Custody Directives", "Smart Route Split Payouts"],
+      summary: "Secures purchase order capital in a verified escrow payment workflow powered by Razorpay until milestone inspection.",
+      techStack: ["Razorpay Orders API", "Standard Checkout Modal", "Milestone Settlement Tracking"],
       guarantees: "Zero counterparty risk for buyers, guaranteed payout for suppliers upon 3-way match."
     }
   ];
@@ -99,7 +99,7 @@ export default function ArchitectureView() {
             Technical Architecture &amp; Execution Pipeline
           </h1>
           <p className="text-[13.5px] text-[#64748B] mt-1">
-            End-to-end autonomous procurement protocol from marketplace ingestion to RBI-compliant escrow settlement.
+            End-to-end autonomous procurement protocol from marketplace ingestion to verified escrow settlement.
           </p>
         </div>
 
@@ -256,13 +256,13 @@ export default function ArchitectureView() {
           </div>
 
           <p className="text-[12.5px] text-[#475569] leading-relaxed">
-            Operates in compliance with Reserve Bank of India (RBI) Directions on Nodal Accounts and Escrow Mechanisms. 100% of awarded PO capital is locked in neutral custody before supplier fulfillment commences.
+            Operates using Razorpay Payment Infrastructure. 100% of awarded PO capital is locked in secure payment workflows before supplier fulfillment commences.
           </p>
 
           <div className="space-y-2 pt-1 text-[11.5px]">
             <div className="p-2.5 rounded-[10px] bg-[#F8FAFC] border border-[#EEF2F7]">
-              <span className="font-semibold text-[#0F172A]">Nodal Custody:</span>
-              <p className="text-[#64748B] mt-0.5">RBI licensed scheduled commercial bank nodal account.</p>
+              <span className="font-semibold text-[#0F172A]">Payment Custody:</span>
+              <p className="text-[#64748B] mt-0.5">Secure payment authorization powered by Razorpay Payment Infrastructure.</p>
             </div>
             <div className="p-2.5 rounded-[10px] bg-[#F8FAFC] border border-[#EEF2F7]">
               <span className="font-semibold text-[#0F172A]">3-Way Match:</span>

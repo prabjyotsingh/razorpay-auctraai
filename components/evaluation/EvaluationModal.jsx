@@ -32,7 +32,7 @@ export default function EvaluationModal({ isOpen, onClose }) {
   const talkingPoints = {
     suppliers: `Sourced from verified enterprise marketplace records covering IndiaMART TrustSEAL, Amazon Business Prime, TradeIndia Trust Stamp, and Alibaba Global with live GSTINs, audited fulfillment rates, and public directory linkages. Built for direct API integration and enterprise PunchOut catalogs.`,
     agents: `Each agent executes distinct autonomous reasoning: Buyer Agent defends budget ceilings; Vendor Agent optimizes competitive floor pricing; Negotiation Agent coordinates equilibrium via live Groq 120B inference; Compliance Agent runs 15-digit GSTIN Modulo-36 check validation; Finance Agent automates Razorpay escrow locks.`,
-    escrow: `Auctra implements the Reserve Bank of India (RBI) Nodal Escrow Directive powered by Razorpay Payment Infrastructure. 100% of awarded purchase order funds are safely locked in a neutral custodial node. Capital is transferred only upon completion of a digital 3-way match (PO = Invoice = Delivery Receipt) and dual buyer sign-off.`
+    escrow: `Auctra implements a milestone-based settlement workflow powered by Razorpay Payment Infrastructure. 100% of awarded purchase order funds are safely locked in secure payment escrow. Capital is transferred only upon completion of a digital 3-way match (PO = Invoice = Delivery Receipt) and dual buyer sign-off.`
   };
 
   return (
@@ -180,7 +180,7 @@ export default function EvaluationModal({ isOpen, onClose }) {
                 <div className="grid grid-cols-3 gap-3 text-xs">
                   <div className="p-3 bg-[#F8FAFC] rounded-[10px] border border-[#EEF2F7]">
                     <div className="font-bold text-[#0F172A]">1. Live Order</div>
-                    <p className="text-[#64748B] mt-1 text-[11px]">Authorized payment locked in neutral nodal trust.</p>
+                    <p className="text-[#64748B] mt-1 text-[11px]">Authorized payment secured via Razorpay.</p>
                   </div>
                   <div className="p-3 bg-[#F8FAFC] rounded-[10px] border border-[#EEF2F7]">
                     <div className="font-bold text-[#0F172A]">2. Delivery Match</div>
@@ -188,7 +188,7 @@ export default function EvaluationModal({ isOpen, onClose }) {
                   </div>
                   <div className="p-3 bg-[#F8FAFC] rounded-[10px] border border-[#EEF2F7]">
                     <div className="font-bold text-[#0F172A]">3. Split Release</div>
-                    <p className="text-[#64748B] mt-1 text-[11px]">Razorpay Smart Route triggers instant vendor payout.</p>
+                    <p className="text-[#64748B] mt-1 text-[11px]">Razorpay settlement workflow triggers vendor payout upon sign-off.</p>
                   </div>
                 </div>
               </div>
@@ -233,7 +233,7 @@ export default function EvaluationModal({ isOpen, onClose }) {
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="text-[#2563EB] font-bold mt-0.5">•</span>
-                    <span><strong>Razorpay Settlement:</strong> RBI-compliant escrow and settlement workflows powered by Razorpay Payment Infrastructure.</span>
+                    <span><strong>Razorpay Settlement:</strong> Milestone-based escrow and settlement workflows powered by Razorpay Payment Infrastructure.</span>
                   </div>
                   <div className="flex items-start gap-2">
                     <span className="text-[#2563EB] font-bold mt-0.5">•</span>
