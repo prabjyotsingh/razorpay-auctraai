@@ -8,7 +8,7 @@ Transform supplier discovery into competitive sourcing, automate procurement wor
 
 ![Next.js](https://img.shields.io/badge/Next.js-15-black)
 ![React](https://img.shields.io/badge/React-19-blue)
-![JavaScript](https://img.shields.io/badge/JayaScript-5.0-blue)
+![JavaScript](https://img.shields.io/badge/JavaScript-5.0-blue)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.0-38BDF8)
 ![Razorpay](https://img.shields.io/badge/Razorpay-Integrated-02042B)
 
