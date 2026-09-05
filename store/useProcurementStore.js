@@ -210,9 +210,14 @@ export const useProcurementStore = create((set, get) => {
       const state = get();
       const participating = state.allVendors.filter(v => state.selectedVendorIds.includes(v.id));
       const freshAuction = createReverseAuctionSession(state.extractedIntent, participating);
+      const firstBidState = generateNextBid({
+        ...freshAuction,
+        status: "running",
+        isLive: true
+      });
 
       set({
-        auctionState: { ...freshAuction, status: "running", isLive: true },
+        auctionState: firstBidState,
         isAuctionSimulating: true
       });
     },
@@ -268,11 +273,16 @@ export const useProcurementStore = create((set, get) => {
 
       const participating = state.allVendors.filter(v => state.selectedVendorIds.includes(v.id));
       const freshAuction = createReverseAuctionSession(updatedIntent, participating);
+      const firstBidState = generateNextBid({
+        ...freshAuction,
+        status: "running",
+        isLive: true
+      });
 
       set({
         extractedIntent: updatedIntent,
         promptInput: updatedIntent.rawPrompt,
-        auctionState: { ...freshAuction, status: "running", isLive: true },
+        auctionState: firstBidState,
         isAuctionSimulating: true,
         activeStep: 3,
         currentView: "step3"

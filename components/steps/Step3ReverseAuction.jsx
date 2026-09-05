@@ -61,17 +61,24 @@ export default function Step3ReverseAuction() {
     };
   }, [auctionState.status, auctionState.isFinished, stepSimulateNextBid]);
 
-  const ceilingTotal = (auctionState.ceilingPrice || 900) * auctionState.quantity;
-  const currentLowest = auctionState.currentLowestBid || auctionState.ceilingPrice || 740;
-  const currentTotal = currentLowest * auctionState.quantity;
-  const totalSavings = Math.max(ceilingTotal - currentTotal, 8000);
-  const savingsPct = ceilingTotal > 0 ? (((ceilingTotal - currentLowest) / ceilingTotal) * 100).toFixed(1) : "17.8";
+  const ceilingPrice = Number(auctionState.ceilingPrice || 900);
+  const qty = Number(auctionState.quantity || 50);
+  const ceilingTotal = ceilingPrice * qty;
+  const hasBids = Boolean(auctionState.bids && auctionState.bids.length > 0);
+  const currentLowest = hasBids 
+    ? Number(auctionState.currentLowestBid || ceilingPrice) 
+    : ceilingPrice;
+  const currentTotal = currentLowest * qty;
+  const totalSavings = hasBids ? Math.max(0, ceilingTotal - currentTotal) : 0;
+  const savingsPct = (hasBids && ceilingTotal > 0) 
+    ? (((ceilingTotal - currentTotal) / ceilingTotal) * 100).toFixed(1) 
+    : "0.0";
 
   const isScheduled = auctionState.status === "scheduled" || auctionState.status === "SCHEDULED";
   const isRunning = auctionState.status === "running" || auctionState.status === "LIVE";
   const isCompleted = auctionState.status === "completed" || auctionState.status === "COMPLETED" || auctionState.isFinished;
 
-  // Normalize Chart Deflation Curve Data so it NEVER renders blank
+  // Normalize Chart Deflation Curve Data so it starts cleanly and updates dynamically
   const chartData = useMemo(() => {
     const rawData = (auctionState.chartData && auctionState.chartData.length > 0)
       ? auctionState.chartData
@@ -81,79 +88,78 @@ export default function Step3ReverseAuction() {
 
     if (rawData.length > 0) {
       return rawData.map((d, i) => {
-        const val = Number(d.price ?? d.lowestBid ?? d.amount ?? auctionState.currentLowestBid ?? 12489);
+        const val = Number(d.price ?? d.lowestBid ?? d.amount ?? auctionState.currentLowestBid ?? ceilingPrice);
         return {
-          time: d.time || `R${i + 1}`,
-          round: d.round || `R${i + 1}`,
-          price: isNaN(val) ? 12000 : val,
-          lowestBid: isNaN(val) ? 12000 : val,
-          ceiling: Number(d.ceiling ?? auctionState.ceilingPrice ?? val * 1.15),
+          time: d.time || `R${i}`,
+          round: d.round || `R${i}`,
+          price: isNaN(val) ? ceilingPrice : val,
+          lowestBid: isNaN(val) ? ceilingPrice : val,
+          ceiling: Number(d.ceiling ?? ceilingPrice),
           vendor: d.vendor || d.vendorName || "Active Bidder"
         };
       });
     }
 
-    if (auctionState.bids && auctionState.bids.length > 0) {
+    if (hasBids) {
       const sortedBids = [...auctionState.bids].reverse();
       return sortedBids.map((b, i) => {
-        const val = Number(b.amountPerUnit || b.amount || b.price || auctionState.ceilingPrice || 900);
+        const val = Number(b.amountPerUnit || b.amount || b.price || ceilingPrice);
         return {
           time: b.timestamp ? b.timestamp.slice(0, 5) : `Bid ${i + 1}`,
           round: `R${Math.min(5, Math.floor(i / 2) + 1)}`,
-          price: isNaN(val) ? 12000 : val,
-          lowestBid: isNaN(val) ? 12000 : val,
-          ceiling: Number(auctionState.ceilingPrice || val * 1.2),
+          price: isNaN(val) ? ceilingPrice : val,
+          lowestBid: isNaN(val) ? ceilingPrice : val,
+          ceiling: ceilingPrice,
           vendor: b.vendorName || "Verified Bidder"
         };
       });
     }
 
-    // Fallback baseline points
-    const ceiling = Number(auctionState.ceilingPrice || 15419);
-    const lowest = Number(auctionState.currentLowestBid || 12489);
+    // Baseline point when no bids have occurred yet (flat opening ceiling anchor)
     return [
-      { time: "Start", round: "R0", price: ceiling, ceiling, vendor: "Opening Ceiling" },
-      { time: "10:10", round: "R1", price: Math.round(ceiling * 0.95), ceiling, vendor: "TechHub Direct" },
-      { time: "10:15", round: "R2", price: Math.round(ceiling * 0.89), ceiling, vendor: "GadgetZone Prime" },
-      { time: "10:20", round: "R3", price: lowest, ceiling, vendor: auctionState.winningVendor || "VoltMart Electronics" }
+      { time: "Start", round: "R0", price: ceilingPrice, lowestBid: ceilingPrice, ceiling: ceilingPrice, vendor: "Opening Ceiling" }
     ];
-  }, [auctionState]);
+  }, [auctionState, ceilingPrice, hasBids]);
 
   // Dynamic Y-Axis scale calculation
   const { yMin, yMax } = useMemo(() => {
     const validPrices = chartData.map(d => d.price).filter(p => typeof p === "number" && !isNaN(p) && p > 0);
-    if (validPrices.length === 0) return { yMin: 10000, yMax: 16000 };
+    if (validPrices.length === 0) return { yMin: Math.max(0, Math.round(ceilingPrice * 0.7)), yMax: Math.round(ceilingPrice * 1.1) };
     const min = Math.min(...validPrices);
-    const max = Math.max(...validPrices, Number(auctionState.ceilingPrice || min * 1.2));
-    const pad = Math.max(50, Math.round((max - min) * 0.15));
+    const max = Math.max(...validPrices, ceilingPrice);
+    const pad = Math.max(20, Math.round((max - min) * 0.25) || Math.round(ceilingPrice * 0.1));
     return {
       yMin: Math.max(0, Math.floor(min - pad)),
       yMax: Math.ceil(max + pad)
     };
-  }, [chartData, auctionState.ceilingPrice]);
+  }, [chartData, ceilingPrice]);
 
-  // Aggregate active participating auctioneers (at least 10 vendors)
+  // Aggregate active participating auctioneers (10 verified enterprise suppliers)
   const participatingAuctioneers = useMemo(() => {
-    const fromParticipants = auctionState.participants || [];
     const vendorsList = (allVendors && allVendors.length > 0) ? allVendors : [];
+    const isWinnerDeclared = hasBids && Boolean(auctionState.winningVendor && auctionState.winningVendor !== "Awaiting Live Bidding");
 
     // Map participating list
     const combined = vendorsList.map((vendor, idx) => {
-      const matchingBid = (auctionState.bids || []).find(b => b.vendorId === vendor.id || b.vendorName === vendor.name);
-      const isWinner = vendor.name === auctionState.winningVendor;
-      const latestPrice = matchingBid ? Number(matchingBid.amountPerUnit || matchingBid.amount || matchingBid.price) : (auctionState.ceilingPrice ? Math.round(auctionState.ceilingPrice * (1 - (idx * 0.015))) : 12489);
+      const matchingBids = (auctionState.bids || []).filter(b => b.vendorId === vendor.id || b.vendorName === vendor.name);
+      const hasPlacedBid = matchingBids.length > 0;
+      const latestBid = hasPlacedBid ? matchingBids[0] : null;
+      const isWinner = isWinnerDeclared && (vendor.name === auctionState.winningVendor || vendor.id === auctionState.winningVendorId);
+      const latestPrice = hasPlacedBid
+        ? Number(latestBid.amountPerUnit || latestBid.amount || latestBid.price)
+        : ceilingPrice;
 
       return {
         ...vendor,
         currentBid: isWinner ? currentLowest : latestPrice,
         isWinning: isWinner,
-        rank: isWinner ? 1 : idx + 2,
-        bidsPlaced: (auctionState.bids || []).filter(b => b.vendorId === vendor.id || b.vendorName === vendor.name).length || (isWinner ? 3 : 1)
+        rank: isWinner ? 1 : (hasPlacedBid ? idx + 2 : idx + 1),
+        bidsPlaced: matchingBids.length
       };
     });
 
     return combined.sort((a, b) => a.currentBid - b.currentBid);
-  }, [allVendors, auctionState, currentLowest]);
+  }, [allVendors, auctionState, currentLowest, ceilingPrice, hasBids]);
 
   return (
     <div className="w-full space-y-6">
@@ -296,11 +302,20 @@ export default function Step3ReverseAuction() {
         <div className="premium-card p-5">
           <div className="text-[12px] font-medium text-[#64748B]">Leading Supplier</div>
           <div className="text-[16px] font-bold text-[#0F172A] truncate mt-1">
-            {auctionState.winningVendor || "VoltMart Electronics"}
+            {hasBids ? (auctionState.winningVendor || "Top Bidder") : "Awaiting Live Bidding"}
           </div>
-          <div className="text-[11.5px] text-[#10B981] font-semibold mt-0.5 flex items-center gap-1">
-            <Check size={12} strokeWidth={2.5} />
-            <span>GST Verified Vendor</span>
+          <div className={`text-[11.5px] font-semibold mt-0.5 flex items-center gap-1 ${hasBids ? "text-[#10B981]" : "text-[#64748B]"}`}>
+            {hasBids ? (
+              <>
+                <Check size={12} strokeWidth={2.5} />
+                <span>GST Verified Vendor</span>
+              </>
+            ) : (
+              <>
+                <Clock size={12} />
+                <span>Auction Ready</span>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -320,7 +335,9 @@ export default function Step3ReverseAuction() {
             </div>
             <div className="flex items-center gap-2">
               <span className="text-[12px] text-[#2563EB] font-mono font-semibold bg-[#EFF6FF] px-2.5 py-1 rounded-[8px] border border-[#BFDBFE]">
-                Round {auctionState.currentRound || 1} of 5
+                {auctionState.currentRound && auctionState.currentRound > 0
+                  ? `Round ${auctionState.currentRound} of 5`
+                  : "Round 0 of 5 (Ready)"}
               </span>
             </div>
           </div>
@@ -395,37 +412,47 @@ export default function Step3ReverseAuction() {
           </div>
 
           <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
-            {(auctionState.bids || []).slice(0, 10).map((bid, idx) => {
-              const displayAmount = Number(bid.amountPerUnit || bid.amount || bid.price || 0);
-              return (
-                <div 
-                  key={bid.bidId || idx} 
-                  className={`p-3 rounded-[12px] border flex items-center justify-between text-[12.5px] transition-colors ${
-                    idx === 0 
-                      ? "bg-[#EFF6FF] border-[#BFDBFE]" 
-                      : "bg-[#F8FAFC] border-[#EEF2F7] hover:border-[#CBD5E1]"
-                  }`}
-                >
-                  <div className="min-w-0 pr-2">
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-semibold text-[#0F172A] truncate">{bid.vendorName}</span>
-                      {idx === 0 && (
-                        <span className="text-[9.5px] font-bold text-[#2563EB] bg-white px-1.5 py-0.2 rounded border border-[#BFDBFE]">
-                          BEST
-                        </span>
-                      )}
+            {(auctionState.bids || []).length === 0 ? (
+              <div className="py-9 text-center px-4 rounded-[12px] bg-[#F8FAFC] border border-dashed border-[#CBD5E1]">
+                <Clock size={24} className="mx-auto text-[#94A3B8] mb-2 animate-pulse" />
+                <div className="text-[13px] font-semibold text-[#334155]">No live bids placed yet</div>
+                <p className="text-[11.5px] text-[#64748B] mt-1 max-w-[220px] mx-auto">
+                  Click <span className="font-semibold text-[#2563EB]">&quot;Start Live Bidding&quot;</span> above to trigger real-time multi-round reverse auctioning.
+                </p>
+              </div>
+            ) : (
+              (auctionState.bids || []).slice(0, 10).map((bid, idx) => {
+                const displayAmount = Number(bid.amountPerUnit || bid.amount || bid.price || 0);
+                return (
+                  <div 
+                    key={bid.bidId || idx} 
+                    className={`p-3 rounded-[12px] border flex items-center justify-between text-[12.5px] transition-colors ${
+                      idx === 0 
+                        ? "bg-[#EFF6FF] border-[#BFDBFE]" 
+                        : "bg-[#F8FAFC] border-[#EEF2F7] hover:border-[#CBD5E1]"
+                    }`}
+                  >
+                    <div className="min-w-0 pr-2">
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-semibold text-[#0F172A] truncate">{bid.vendorName}</span>
+                        {idx === 0 && (
+                          <span className="text-[9.5px] font-bold text-[#2563EB] bg-white px-1.5 py-0.2 rounded border border-[#BFDBFE]">
+                            BEST
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-[11px] text-[#64748B] flex items-center gap-1.5 mt-0.5">
+                        <span>{bid.timestamp || "Just now"}</span>
+                        {bid.city && <span>• {bid.city}</span>}
+                      </div>
                     </div>
-                    <div className="text-[11px] text-[#64748B] flex items-center gap-1.5 mt-0.5">
-                      <span>{bid.timestamp || "Just now"}</span>
-                      {bid.city && <span>• {bid.city}</span>}
+                    <div className="font-mono font-bold text-[#0F172A] text-right shrink-0">
+                      ₹{displayAmount.toLocaleString("en-IN")}
                     </div>
                   </div>
-                  <div className="font-mono font-bold text-[#0F172A] text-right shrink-0">
-                    ₹{displayAmount.toLocaleString("en-IN")}
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
         </div>
       </div>

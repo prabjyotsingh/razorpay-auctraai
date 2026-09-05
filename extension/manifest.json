@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Auctra Procurement Copilot",
   "version": "1.0.0",
-  "description": "Enterprise Procurement Copilot for IndiaMART, Amazon Business, Alibaba, and TradeIndia.",
+  "description": "Enterprise Procurement Copilot — works on any e-commerce or B2B marketplace worldwide.",
   "permissions": [
     "activeTab",
     "storage",
@@ -10,13 +10,7 @@
     "tabs"
   ],
   "host_permissions": [
-    "https://*.indiamart.com/*",
-    "https://*.amazon.in/*",
-    "https://*.amazon.com/*",
-    "https://*.alibaba.com/*",
-    "https://*.tradeindia.com/*",
-    "http://localhost:3000/*",
-    "https://*.vercel.app/*"
+    "<all_urls>"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -32,16 +26,10 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "https://*.indiamart.com/*",
-        "https://*.amazon.in/*",
-        "https://*.amazon.com/*",
-        "https://*.alibaba.com/*",
-        "https://*.tradeindia.com/*",
-        "http://localhost:3000/*"
-      ],
+      "matches": ["<all_urls>"],
       "js": ["content.js"],
-      "run_at": "document_idle"
+      "run_at": "document_idle",
+      "all_frames": false
     }
   ],
   "icons": {

@@ -11,12 +11,30 @@
     try {
       const hostname = new URL(url).hostname.toLowerCase();
       if (hostname.includes("indiamart.com")) return "IndiaMART";
-      if (hostname.includes("amazon.in") || hostname.includes("amazon.com") || hostname.includes("amazon.")) return "Amazon Business";
-      if (hostname.includes("alibaba.com") || hostname.includes("aliexpress.com")) return "Alibaba";
+      if (hostname.includes("amazon.in") || hostname.includes("amazon.com") || hostname.match(/amazon\.[a-z]{2,3}$/)) return "Amazon";
+      if (hostname.includes("alibaba.com") || hostname.includes("1688.com")) return "Alibaba";
+      if (hostname.includes("aliexpress.com")) return "AliExpress";
       if (hostname.includes("tradeindia.com")) return "TradeIndia";
-      return "Marketplace Listing";
+      if (hostname.includes("flipkart.com")) return "Flipkart";
+      if (hostname.includes("snapdeal.com")) return "Snapdeal";
+      if (hostname.includes("meesho.com")) return "Meesho";
+      if (hostname.includes("jiomart.com")) return "JioMart";
+      if (hostname.includes("myntra.com")) return "Myntra";
+      if (hostname.includes("nykaa.com")) return "Nykaa";
+      if (hostname.includes("industrybuying.com")) return "IndustryBuying";
+      if (hostname.includes("moglix.com")) return "Moglix";
+      if (hostname.includes("exportersindia.com")) return "ExportersIndia";
+      if (hostname.includes("made-in-china.com")) return "MadeInChina";
+      if (hostname.includes("dhgate.com")) return "DHgate";
+      if (hostname.includes("globalsources.com")) return "GlobalSources";
+      if (hostname.includes("ebay.com") || hostname.includes("ebay.in")) return "eBay";
+      if (hostname.includes("walmart.com")) return "Walmart";
+      if (hostname.includes("etsy.com")) return "Etsy";
+      if (hostname.includes("shopify.com") || hostname.includes(".myshopify.com")) return "Shopify";
+      if (hostname.includes("woocommerce.com")) return "WooCommerce";
+      return "Universal";
     } catch {
-      return "Marketplace Listing";
+      return "Universal";
     }
   }
 
@@ -61,7 +79,7 @@
     let location = "";
     let moq = 50;
 
-    // 1. Platform Specific Selectors
+    // 1. Platform-Specific Selectors
     if (source === "IndiaMART") {
       title = cleanText(
         document.querySelector("#item_title")?.innerText ||
@@ -92,35 +110,43 @@
         document.querySelector(".moq")?.innerText ||
         document.querySelector(".min-order")?.innerText
       );
-    } else if (source === "Amazon Business") {
+
+    } else if (source === "Amazon") {
       title = cleanText(
         document.querySelector("#productTitle")?.innerText ||
         document.querySelector("h1#title")?.innerText ||
+        document.querySelector(".product-title-word-break")?.innerText ||
         document.querySelector("h1")?.innerText
       );
       price = parsePrice(
         document.querySelector(".a-price-whole")?.innerText ||
         document.querySelector(".a-price .a-offscreen")?.innerText ||
-        document.querySelector("#priceblock_ourprice")?.innerText
+        document.querySelector("#priceblock_ourprice")?.innerText ||
+        document.querySelector("#priceblock_dealprice")?.innerText ||
+        document.querySelector(".apexPriceToPay .a-offscreen")?.innerText
       );
       supplier = cleanText(
         document.querySelector("#bylineInfo")?.innerText ||
         document.querySelector("#tabular-buybox .tabular-buybox-text[tabular-attribute-name='Sold by'] a")?.innerText ||
-        document.querySelector("#sellerProfileTriggerId")?.innerText
-      ).replace(/^(Sold by|Visit the)\s+/i, "");
+        document.querySelector("#sellerProfileTriggerId")?.innerText ||
+        document.querySelector(".po-brand .po-break-word")?.innerText
+      ).replace(/^(Sold by|Visit the|Brand:\s*)\s*/i, "");
       location = cleanText(
         document.querySelector("#contextualIngressPtLabel_deliveryLocationPicker")?.innerText
       );
       moq = parseMoq(document.querySelector("#quantity")?.innerText);
+
     } else if (source === "Alibaba") {
       title = cleanText(
         document.querySelector("h1.module-pdp-title")?.innerText ||
+        document.querySelector(".product-title-text")?.innerText ||
         document.querySelector("h1")?.innerText ||
         document.querySelector(".product-title")?.innerText
       );
       price = parsePrice(
         document.querySelector(".price-item")?.innerText ||
-        document.querySelector(".promotion-price")?.innerText
+        document.querySelector(".promotion-price")?.innerText ||
+        document.querySelector(".price-range")?.innerText
       );
       supplier = cleanText(
         document.querySelector(".company-name")?.innerText ||
@@ -131,7 +157,27 @@
         document.querySelector(".supplier-country")?.innerText ||
         document.querySelector(".company-address")?.innerText
       );
-      moq = parseMoq(document.querySelector(".moq")?.innerText);
+      moq = parseMoq(
+        document.querySelector(".moq")?.innerText ||
+        document.querySelector(".min-order-quantity")?.innerText
+      );
+
+    } else if (source === "AliExpress") {
+      title = cleanText(
+        document.querySelector("h1.product-title-text")?.innerText ||
+        document.querySelector(".product-title")?.innerText ||
+        document.querySelector("h1")?.innerText
+      );
+      price = parsePrice(
+        document.querySelector(".product-price-value")?.innerText ||
+        document.querySelector(".uniform-banner-box-price")?.innerText
+      );
+      supplier = cleanText(
+        document.querySelector(".shop-name")?.innerText ||
+        document.querySelector(".store-info")?.innerText
+      );
+      moq = parseMoq(document.querySelector(".product-quantity-tip")?.innerText);
+
     } else if (source === "TradeIndia") {
       title = cleanText(
         document.querySelector("h1.product-title")?.innerText ||
@@ -152,22 +198,181 @@
         document.querySelector(".location")?.innerText
       );
       moq = parseMoq(document.querySelector(".moq-val")?.innerText);
+
+    } else if (source === "Flipkart") {
+      title = cleanText(
+        document.querySelector("span.B_NuCI")?.innerText ||
+        document.querySelector(".yhB1nd")?.innerText ||
+        document.querySelector("h1")?.innerText
+      );
+      price = parsePrice(
+        document.querySelector("._30jeq3")?.innerText ||
+        document.querySelector("._16Jk6d")?.innerText ||
+        document.querySelector(".Nx9bqj")?.innerText
+      );
+      supplier = cleanText(
+        document.querySelector("._2mEox a")?.innerText ||
+        document.querySelector(".WrsTCp")?.innerText ||
+        document.querySelector(".prd-seller a")?.innerText ||
+        "Flipkart Seller"
+      );
+      location = "India";
+
+    } else if (source === "Snapdeal") {
+      title = cleanText(
+        document.querySelector("h1.pdp-e-i-head")?.innerText ||
+        document.querySelector("h1")?.innerText
+      );
+      price = parsePrice(
+        document.querySelector(".payBlkBig")?.innerText ||
+        document.querySelector(".product-price")?.innerText
+      );
+      supplier = cleanText(
+        document.querySelector(".sold-by span")?.innerText ||
+        document.querySelector(".seller-name")?.innerText ||
+        "Snapdeal Seller"
+      );
+
+    } else if (source === "Meesho") {
+      title = cleanText(
+        document.querySelector("p.sc-eDvSVe")?.innerText ||
+        document.querySelector("h1")?.innerText
+      );
+      price = parsePrice(
+        document.querySelector(".sc-hCZuQt")?.innerText ||
+        document.querySelector(".price")?.innerText
+      );
+      supplier = "Meesho Supplier";
+
+    } else if (source === "JioMart") {
+      title = cleanText(
+        document.querySelector("h1.title")?.innerText ||
+        document.querySelector(".product-name")?.innerText ||
+        document.querySelector("h1")?.innerText
+      );
+      price = parsePrice(
+        document.querySelector(".jm-badge")?.innerText ||
+        document.querySelector(".final-price")?.innerText ||
+        document.querySelector(".product-price")?.innerText
+      );
+      supplier = "JioMart";
+      location = "India";
+
+    } else if (source === "Moglix" || source === "IndustryBuying") {
+      title = cleanText(
+        document.querySelector(".product-name")?.innerText ||
+        document.querySelector("h1")?.innerText
+      );
+      price = parsePrice(
+        document.querySelector(".price")?.innerText ||
+        document.querySelector(".selling-price")?.innerText ||
+        document.querySelector(".discounted-price")?.innerText
+      );
+      supplier = cleanText(
+        document.querySelector(".brand-name")?.innerText ||
+        document.querySelector(".brand")?.innerText ||
+        source
+      );
+      location = "India";
+
+    } else if (source === "MadeInChina" || source === "GlobalSources") {
+      title = cleanText(
+        document.querySelector(".product-name")?.innerText ||
+        document.querySelector("h1")?.innerText
+      );
+      price = parsePrice(
+        document.querySelector(".price")?.innerText ||
+        document.querySelector(".product-price")?.innerText
+      );
+      supplier = cleanText(
+        document.querySelector(".company-name")?.innerText ||
+        document.querySelector(".supplier-name")?.innerText
+      );
+      location = "China";
+      moq = parseMoq(document.querySelector(".min-order")?.innerText);
+
+    } else if (source === "DHgate") {
+      title = cleanText(
+        document.querySelector(".product-h1")?.innerText ||
+        document.querySelector("h1")?.innerText
+      );
+      price = parsePrice(
+        document.querySelector(".price-value")?.innerText ||
+        document.querySelector(".price-sale")?.innerText
+      );
+      supplier = cleanText(
+        document.querySelector(".store-name")?.innerText ||
+        document.querySelector(".seller-name")?.innerText
+      );
+      location = "China";
+      moq = parseMoq(document.querySelector(".min-order")?.innerText);
+
+    } else if (source === "eBay") {
+      title = cleanText(
+        document.querySelector("h1.x-item-title__mainTitle")?.innerText ||
+        document.querySelector("#itemTitle")?.innerText ||
+        document.querySelector("h1")?.innerText
+      );
+      price = parsePrice(
+        document.querySelector(".x-price-primary")?.innerText ||
+        document.querySelector("#prcIsum")?.innerText ||
+        document.querySelector(".display-price")?.innerText
+      );
+      supplier = cleanText(
+        document.querySelector(".seller-persona")?.innerText ||
+        document.querySelector("#mbgLink")?.innerText
+      );
+
+    } else if (source === "Walmart") {
+      title = cleanText(
+        document.querySelector("h1.lh-copy")?.innerText ||
+        document.querySelector("[itemprop='name']")?.innerText ||
+        document.querySelector("h1")?.innerText
+      );
+      price = parsePrice(
+        document.querySelector("[itemprop='price']")?.getAttribute("content") ||
+        document.querySelector(".price-characteristic")?.innerText
+      );
+      supplier = cleanText(
+        document.querySelector(".seller-name")?.innerText ||
+        "Walmart"
+      );
+
+    } else if (source === "Etsy") {
+      title = cleanText(
+        document.querySelector("h1[data-buy-box-listing-title]")?.innerText ||
+        document.querySelector("h1")?.innerText
+      );
+      price = parsePrice(
+        document.querySelector(".currency-value")?.innerText ||
+        document.querySelector("[data-selector='price-only']")?.innerText
+      );
+      supplier = cleanText(
+        document.querySelector(".shop-name-and-title-container")?.innerText ||
+        document.querySelector("a.shop-link")?.innerText
+      );
     }
 
-    // 2. JSON-LD Fallback
+    // 2. JSON-LD Structured Data Fallback (works on 80%+ of modern e-commerce sites)
     if (!title || !price || !supplier) {
       const scripts = document.querySelectorAll('script[type="application/ld+json"]');
       for (const s of scripts) {
         try {
-          const data = JSON.parse(s.innerText);
+          const raw = s.innerText || s.textContent;
+          const data = JSON.parse(raw);
           const items = Array.isArray(data) ? data : [data];
           for (const item of items) {
-            if (item["@type"] === "Product" || item["@type"] === "IndividualProduct") {
+            const type = item["@type"];
+            if (type === "Product" || type === "IndividualProduct" || type === "ItemPage") {
               if (!title && item.name) title = cleanText(item.name);
-              if (!price && item.offers) {
+              if (!supplier && item.brand?.name) supplier = cleanText(item.brand.name);
+              if (item.offers) {
                 const offer = Array.isArray(item.offers) ? item.offers[0] : item.offers;
-                if (offer.price) price = parsePrice(String(offer.price));
+                if (!price && offer.price) price = parsePrice(String(offer.price));
                 if (!supplier && offer.seller?.name) supplier = cleanText(offer.seller.name);
+              }
+              if (!location && item.manufacturer?.address?.addressLocality) {
+                location = item.manufacturer.address.addressLocality;
               }
             }
           }
@@ -175,7 +380,7 @@
       }
     }
 
-    // 3. OpenGraph Fallback
+    // 3. OpenGraph / Meta Tag Fallback
     if (!title) {
       title = cleanText(
         document.querySelector('meta[property="og:title"]')?.getAttribute("content") ||
@@ -184,46 +389,46 @@
         document.title
       );
     }
-
     if (!price) {
-      const metaPrice = document.querySelector('meta[property="product:price:amount"]')?.getAttribute("content") ||
-                        document.querySelector('meta[property="og:price:amount"]')?.getAttribute("content");
+      const metaPrice =
+        document.querySelector('meta[property="product:price:amount"]')?.getAttribute("content") ||
+        document.querySelector('meta[property="og:price:amount"]')?.getAttribute("content") ||
+        document.querySelector('meta[name="price"]')?.getAttribute("content");
       if (metaPrice) {
         price = parsePrice(metaPrice);
       } else if (document.body?.innerText) {
-        const match = document.body.innerText.match(/(?:₹|INR|\$)\s*([\d,]+(?:\.\d{2})?)/);
+        const match = document.body.innerText.match(/(?:₹|INR|\$|€|£)\s*([\d,]+(?:\.\d{2})?)/);
         if (match && match[1]) price = parsePrice(match[1]);
       }
     }
-
     if (!supplier) {
       supplier = cleanText(
         document.querySelector('meta[property="og:site_name"]')?.getAttribute("content") ||
-        document.querySelector(".seller, .vendor, .merchant, .brand")?.innerText ||
-        "Verified Directory Supplier"
+        document.querySelector(".seller, .vendor, .merchant, .brand, .store-name, .shop-name")?.innerText ||
+        new URL(url).hostname.replace(/^www\./, "").split(".")[0] ||
+        "Verified Supplier"
       );
     }
 
-    // Clean title from generic SEO spam or home page titles
+    // 4. Smart Title Cleanup
     let cleanTitle = title || "";
     const lowerTitle = cleanTitle.toLowerCase();
-    if (
-      lowerTitle.includes("online shopping site") ||
-      lowerTitle.includes("shop online for") ||
-      lowerTitle.includes("india's largest online") ||
-      lowerTitle.includes("india's largest b2b") ||
-      lowerTitle.includes("manufacturers, suppliers") ||
-      lowerTitle.includes("wholesale market") ||
-      (lowerTitle.includes("amazon.in") && lowerTitle.length > 30)
-    ) {
-      cleanTitle = "Commercial Ergonomic Workstation Equipment (Batch Sourcing)";
+    const genericPhrases = [
+      "online shopping site", "shop online for", "india's largest online",
+      "india's largest b2b", "manufacturers, suppliers", "wholesale market",
+      "buy online", "free delivery", "best price"
+    ];
+    if (genericPhrases.some(p => lowerTitle.includes(p)) || cleanTitle.length < 5) {
+      cleanTitle = "Commercial Product (Batch Sourcing)";
     } else {
-      cleanTitle = cleanTitle.replace(/\s*[-|–:]\s*(Amazon\.in|IndiaMART|TradeIndia|Alibaba\.com|Amazon)\s*$/i, "").trim();
+      cleanTitle = cleanTitle
+        .replace(/\s*[-|–|·]\s*(Amazon\.in|Amazon|IndiaMART|Flipkart|Snapdeal|TradeIndia|Alibaba\.com|AliExpress|eBay|Walmart|Etsy|Meesho|JioMart|Moglix|DHgate)\s*$/i, "")
+        .trim();
     }
 
     return {
-      productName: cleanTitle ? cleanTitle.slice(0, 140) : "Commercial IT Hardware SKU",
-      supplierName: supplier || "Verified Star Supplier",
+      productName: cleanTitle ? cleanTitle.slice(0, 140) : "Commercial Product SKU",
+      supplierName: supplier || "Verified Supplier",
       price: price || 850,
       moq: moq || 50,
       location: location || "India",
